@@ -5,374 +5,165 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Birthday Surprise</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
 
 <style>
 html,body{
-  margin:0;padding:0;width:100%;height:100%;
-  overflow:hidden;background:black;
-  font-family:'Montserrat',sans-serif;
-}
-
-/* ---------- COMMON ---------- */
-.screen{
-  position:absolute;
-  width:100%;height:100%;
-  display:none;
-  justify-content:center;
-  align-items:center;
-  flex-direction:column;
-}
-.show{display:flex}
-
-/* ---------- INTRO ---------- */
-#intro{
-  background:radial-gradient(circle,#1b2a4a,#000);
-  color:white;text-align:center;
-}
-.phone{
-  width:90px;height:160px;
-  border:3px solid #fff;border-radius:18px;
-  margin-bottom:25px;
-  animation:float 2.5s infinite;
-}
-@keyframes float{
-  0%{transform:translateY(0)}
-  50%{transform:translateY(-12px)}
-  100%{transform:translateY(0)}
-}
-.swipeText{
-  font-size:18px;
-  animation:pulse 1.6s infinite;
-}
-.arrow{
-  font-size:26px;margin-top:10px;
-  animation:bounce 1.2s infinite;
-}
-@keyframes bounce{
-  0%{transform:translateY(0)}
-  50%{transform:translateY(-10px)}
-  100%{transform:translateY(0)}
-}
-@keyframes pulse{
-  0%{opacity:.4}50%{opacity:1}100%{opacity:.4}
-}
-
-/* ---------- ENVELOPE ---------- */
-#s1{
-  background:radial-gradient(circle at top,#1b2a4a,#000);
-  color:white;
-}
-.curiosity{font-size:18px;margin-bottom:16px}
-.envelope{
-  width:240px;height:150px;
-  background:#f5f5f5;border-radius:12px;
-  animation:glow 2s infinite;
-}
-.envelope:before{
-  content:"";position:absolute;
-  border-left:120px solid transparent;
-  border-right:120px solid transparent;
-  border-top:75px solid #ddd;
-}
-@keyframes glow{
-  0%{box-shadow:0 0 12px rgba(255,255,255,.3)}
-  50%{box-shadow:0 0 30px rgba(255,255,255,.7)}
-  100%{box-shadow:0 0 12px rgba(255,255,255,.3)}
-}
-.tapHint{
-  margin-top:14px;
-  font-size:14px;
-  animation:pulse 1.5s infinite;
-}
-#count{font-size:44px;margin-top:22px;opacity:0}
-
-/* ---------- CAKE ---------- */
-#s2{background:#fdeaea}
-#cake{width:260px}
-#matchstick{
-  width:140px;position:absolute;
-  bottom:8%;left:8%;
-  touch-action:none;
-}
-#hit{
-  position:absolute;
-  top:42%;left:50%;
-  width:60px;height:60px;
-  transform:translateX(-50%);
+  margin:0;
+  padding:0;
+  width:100%;
+  height:100%;
+  background:black;
+  overflow:hidden;
+  font-family:'Poppins',sans-serif;
 }
 
 /* ---------- SKY ---------- */
-#s3{background:black;overflow:hidden}
-canvas{position:absolute;top:0;left:0}
-
-/* Crescent Moon */
-.moon{
+#sky{
   position:absolute;
-  top:7%;right:10%;
-  width:80px;height:80px;
-  border-radius:50%;
-  box-shadow:-15px 0 0 0 #fff;
-  filter:drop-shadow(0 0 20px rgba(255,255,255,.6));
+  inset:0;
+  overflow:hidden;
 }
 
-/* Clouds */
+/* ---------- MOON ---------- */
+.moon{
+  position:absolute;
+  top:8%;
+  right:12%;
+  width:90px;
+  height:90px;
+  background:white;
+  border-radius:50%;
+  box-shadow:-22px 0 0 0 black;
+  filter:drop-shadow(0 0 25px rgba(255,255,255,0.7));
+}
+
+/* ---------- CLOUDS ---------- */
 .cloud{
   position:absolute;
-  top:12%;right:-40px;
-  width:220px;height:55px;
-  background:rgba(255,255,255,.18);
-  border-radius:60px;
-  filter:blur(10px);
-  animation:cloudMove 18s linear infinite;
+  top:12%;
+  right:-200px;
+  width:260px;
+  height:80px;
+  background:#fff;
+  border-radius:50px;
+  opacity:0.25;
+  filter:blur(1px);
+  animation:cloudMove 25s linear infinite;
+}
+.cloud:before,
+.cloud:after{
+  content:'';
+  position:absolute;
+  background:#fff;
+  width:120px;
+  height:120px;
+  top:-50px;
+  left:30px;
+  border-radius:50%;
+}
+.cloud:after{
+  width:140px;
+  height:140px;
+  top:-70px;
+  left:100px;
 }
 @keyframes cloudMove{
   from{transform:translateX(0)}
-  to{transform:translateX(-120px)}
+  to{transform:translateX(-500px)}
 }
 
-/* Text */
-.textBlock{
-  z-index:3;
-  text-align:center;
-  color:#4cff4c;
-  animation:breathe 3s infinite;
-}
-@keyframes breathe{
-  0%{text-shadow:0 0 6px rgba(0,255,0,.4)}
-  50%{text-shadow:0 0 14px rgba(0,255,0,.8)}
-  100%{text-shadow:0 0 6px rgba(0,255,0,.4)}
-}
-.textBlock div{
-  font-size:30px;margin:8px 0;
-  opacity:0;
-  transform:translateY(20px);
-  animation:reveal 1.6s forwards;
-}
-.textBlock div:nth-child(2){animation-delay:1.6s}
-.textBlock div:nth-child(3){animation-delay:3.2s}
-@keyframes reveal{
-  to{opacity:1;transform:translateY(0)}
-}
-
-/* ---------- TEMPLE ---------- */
-#s4{overflow:hidden}
-#temple{
-  width:100%;height:100%;
-  object-fit:cover;
-  animation:zoom 10s ease-in-out forwards;
-}
-@keyframes zoom{
-  from{transform:scale(1)}
-  to{transform:scale(1.08)}
-}
-.final{
+/* ---------- TEXT ---------- */
+.text{
   position:absolute;
-  bottom:5%;width:100%;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
   text-align:center;
-  font-size:24px;
-  color:white;
-  text-shadow:0 0 12px black;
+  z-index:5;
 }
+.text h1,
+.text h2,
+.text h3{
+  margin:12px 0;
+  color:#00ff5a;
+  text-shadow:
+    0 0 10px rgba(0,255,90,0.6),
+    0 0 25px rgba(0,255,90,0.8);
+}
+.text h1{
+  font-size:34px;
+  font-weight:800;
+}
+.text h2{
+  font-size:30px;
+  font-weight:800;
+  white-space:nowrap;
+}
+.text h3{
+  font-size:22px;
+  font-weight:700;
+}
+
+/* ---------- CANVAS ---------- */
+canvas{
+  position:absolute;
+  inset:0;
+}
+
+/* ---------- REPLAY ---------- */
 .replay{
   position:absolute;
-  top:20px;right:20px;
-  background:rgba(0,0,0,.5);
+  bottom:20px;
+  right:20px;
+  padding:10px 18px;
+  border-radius:25px;
+  background:rgba(0,0,0,0.6);
   color:white;
-  padding:8px 14px;
-  border-radius:20px;
   font-size:14px;
+  z-index:10;
 }
 </style>
 </head>
 
 <body>
 
-<!-- INTRO -->
-<div class="screen show" id="intro">
-  <div class="phone"></div>
-  <div class="swipeText">Swipe up to begin something magical ✨</div>
-  <div class="arrow">↑</div>
-</div>
-
-<!-- ENVELOPE -->
-<div class="screen" id="s1">
-  <div class="curiosity">Something special is waiting…</div>
-  <div class="envelope" id="env"></div>
-  <div class="tapHint">Tap the envelope to open</div>
-  <div id="count"></div>
-</div>
-
-<!-- CAKE -->
-<div class="screen" id="s2">
-  <img id="cake" src="assets/cake.png">
-  <div id="hit"></div>
-  <img id="matchstick" src="assets/matchstick.png">
-</div>
-
-<!-- SKY -->
-<div class="screen" id="s3">
+<div id="sky">
+  <canvas id="canvas"></canvas>
   <div class="moon"></div>
   <div class="cloud"></div>
-  <canvas id="stars"></canvas>
-  <div class="textBlock">
-    <div>HAPPY BIRTHDAY</div>
-    <div>SWETA CHOUDHARY SINGH</div>
-    <div>STAY HAPPY & BLESSED</div>
-  </div>
 </div>
 
-<!-- TEMPLE -->
-<div class="screen" id="s4">
-  <img id="temple" src="assets/temple_couple.jpg">
-  <div class="final">ALWAYS STAY HAPPY & BLESSED ❤️</div>
-  <div class="replay" id="replay">Replay</div>
+<div class="text">
+  <h1>HAPPY BIRTHDAY</h1>
+  <h2>SWETA CHOUDHARY SINGH</h2>
+  <h3>STAY HAPPY & BLESSED</h3>
 </div>
+
+<div class="replay" onclick="location.reload()">Replay</div>
 
 <script>
-/* ---------- AUDIO ENGINE ---------- */
-const AudioCtx=window.AudioContext||window.webkitAudioContext;
-const audioCtx=new AudioCtx();
-let ambientOsc=null;
+const canvas=document.getElementById('canvas');
+const ctx=canvas.getContext('2d');
 
-function playAmbient(freq,vol){
-  stopAmbient();
-  ambientOsc=audioCtx.createOscillator();
-  const g=audioCtx.createGain();
-  ambientOsc.frequency.value=freq;
-  ambientOsc.type="sine";
-  g.gain.value=vol;
-  ambientOsc.connect(g);
-  g.connect(audioCtx.destination);
-  ambientOsc.start();
-}
-function stopAmbient(){
-  if(ambientOsc){
-    ambientOsc.stop();
-    ambientOsc=null;
-  }
-}
-function tone(f,d=.8,v=.05){
-  const o=audioCtx.createOscillator();
-  const g=audioCtx.createGain();
-  o.frequency.value=f;
-  g.gain.value=v;
-  o.connect(g);
-  g.connect(audioCtx.destination);
-  o.start();
-  o.stop(audioCtx.currentTime+d);
-}
-
-/* ---------- SCREEN CONTROL ---------- */
-let current=0;
-function show(id){
-  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("show"));
-  document.getElementById(id).classList.add("show");
-}
-
-/* ---------- SWIPE (ONLY INTRO) ---------- */
-let startY=null;
-document.addEventListener("touchstart",e=>{
-  if(current!==0)return;
-  startY=e.touches[0].clientY;
-});
-document.addEventListener("touchend",e=>{
-  if(current!==0||startY===null)return;
-  let endY=e.changedTouches[0].clientY;
-  if(startY-endY>80){
-    audioCtx.resume();
-    tone(220);
-    current=1;
-    show("s1");
-  }
-  startY=null;
-});
-
-/* ---------- ENVELOPE ---------- */
-const env=document.getElementById("env");
-let counted=false;
-env.onclick=()=>{
-  if(counted)return;
-  counted=true;
-  let n=3;
-  count.style.opacity=1;
-  count.innerText=n;
-  const i=setInterval(()=>{
-    tone(200+n*40,.2);
-    n--;
-    count.innerText=n;
-    if(n===0){
-      clearInterval(i);
-      current=2;
-      show("s2");
-    }
-  },900);
-};
-
-/* ---------- MATCHSTICK ---------- */
-let stick=document.getElementById("matchstick");
-let hit=document.getElementById("hit");
-let ox,oy,lit=false;
-
-stick.addEventListener("touchstart",e=>{
-  if(current!==2)return;
-  let t=e.touches[0];
-  ox=t.clientX-stick.offsetLeft;
-  oy=t.clientY-stick.offsetTop;
-});
-stick.addEventListener("touchmove",e=>{
-  if(current!==2||lit)return;
-  let t=e.touches[0];
-  stick.style.left=(t.clientX-ox)+"px";
-  stick.style.top=(t.clientY-oy)+"px";
-  let a=stick.getBoundingClientRect();
-  let b=hit.getBoundingClientRect();
-  if(a.right>b.left&&a.left<b.right&&a.bottom>b.top&&a.top<b.bottom){
-    lit=true;
-    tone(880,1,.08);
-    playAmbient(120,.05);
-    current=3;
-    show("s3");
-    setTimeout(()=>{
-      stopAmbient();
-      tone(260,2,.04);
-      current=4;
-      show("s4");
-    },12000);
-  }
-});
-
-/* ---------- STARS + FIREFLIES ---------- */
-const canvas=document.getElementById("stars");
-const ctx=canvas.getContext("2d");
 function resize(){
   canvas.width=innerWidth;
   canvas.height=innerHeight;
 }
-resize();window.onresize=resize;
+resize();
+addEventListener('resize',resize);
 
-let stars=[],flies=[];
-setInterval(()=>{
-  if(current!==3)return;
-  for(let i=0;i<10;i++){
-    stars.push({
-      x:Math.random()*canvas.width,
-      y:-40,
-      vx:-3-Math.random()*2,
-      vy:4+Math.random()*2,
-      r:3
-    });
-  }
-},180);
-
-setInterval(()=>{
-  if(current!==3)return;
-  flies.push({
+/* ---------- STARS ---------- */
+let stars=[];
+function createStar(){
+  return{
     x:Math.random()*canvas.width,
     y:Math.random()*canvas.height,
-    a:0
-  });
-},600);
+    r:2+Math.random()*1.5,
+    tw:Math.random()*Math.PI
+  };
+}
+for(let i=0;i<120;i++)stars.push(createStar());
 
 function drawStar(x,y,r){
   ctx.beginPath();
@@ -390,40 +181,61 @@ function drawStar(x,y,r){
   ctx.fill();
 }
 
-function draw(){
+/* ---------- SHOOTING STARS ---------- */
+let shooting=[];
+function spawnShooting(){
+  shooting.push({
+    x:Math.random()*canvas.width,
+    y:-50,
+    vx:-4,
+    vy:6,
+    r:3
+  });
+}
+setInterval(()=>{for(let i=0;i<3;i++)spawnShooting()},500);
+
+/* ---------- FIREFLIES ---------- */
+let flies=[];
+setInterval(()=>{
+  flies.push({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    a:Math.random()*Math.PI
+  });
+},600);
+
+/* ---------- LOOP ---------- */
+function animate(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
-  if(current===3){
-    ctx.fillStyle="white";
-    stars.forEach((s,i)=>{
-      drawStar(s.x,s.y,s.r);
-      s.x+=s.vx;
-      s.y+=s.vy;
-      if(s.y>canvas.height)stars.splice(i,1);
-    });
+  /* stars */
+  stars.forEach(s=>{
+    s.tw+=0.02;
+    ctx.fillStyle=`rgba(255,255,255,${0.4+Math.sin(s.tw)*0.6})`;
+    drawStar(s.x,s.y,s.r);
+  });
 
-    flies.forEach(f=>{
-      f.a+=0.05;
-      ctx.fillStyle=`rgba(200,255,150,${0.5+Math.sin(f.a)*0.5})`;
-      ctx.beginPath();
-      ctx.arc(f.x,f.y,2,0,Math.PI*2);
-      ctx.fill();
-    });
-  }
+  /* shooting stars */
+  ctx.fillStyle='white';
+  shooting.forEach((s,i)=>{
+    drawStar(s.x,s.y,s.r);
+    s.x+=s.vx;
+    s.y+=s.vy;
+    if(s.y>canvas.height)shooting.splice(i,1);
+  });
 
-  requestAnimationFrame(draw);
+  /* fireflies */
+  flies.forEach(f=>{
+    f.a+=0.04;
+    ctx.fillStyle=`rgba(255,220,120,${0.4+Math.sin(f.a)*0.4})`;
+    ctx.beginPath();
+    ctx.arc(f.x,f.y,2,0,Math.PI*2);
+    ctx.fill();
+  });
+
+  requestAnimationFrame(animate);
 }
-draw();
-
-/* ---------- REPLAY ---------- */
-document.getElementById("replay").onclick=()=>{
-  stopAmbient();
-  stars=[];flies=[];
-  counted=false;lit=false;
-  count.style.opacity=0;
-  current=0;
-  show("intro");
-};
+animate();
 </script>
 
 </body>
