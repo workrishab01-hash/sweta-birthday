@@ -3,27 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Drag Test</title>
+<title>Drag Test Fixed</title>
 
 <style>
 html, body {
   margin: 0;
   padding: 0;
+  width: 100%;
   height: 100%;
   overflow: hidden;
+  background: #c40000;
   touch-action: none;
-  background: red;
 }
 
 #container {
-  position: relative;
-  width: 100%;
-  height: 100%;
+  position: fixed;
+  inset: 0;
+  background: #c40000;
 }
 
 #cake {
   position: absolute;
-  top: 25%;
+  top: 20%;
   left: 50%;
   transform: translateX(-50%);
   width: 260px;
@@ -39,17 +40,17 @@ html, body {
 
 .sparkle {
   position: absolute;
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   background: gold;
   border-radius: 50%;
-  animation: sparkle 1s infinite;
+  pointer-events: none;
+  animation: burst 1.2s ease-out forwards;
 }
 
-@keyframes sparkle {
-  0% { transform: scale(0.3); opacity: 0.3; }
-  50% { transform: scale(1.2); opacity: 1; }
-  100% { transform: scale(0.3); opacity: 0.3; }
+@keyframes burst {
+  from { transform: scale(1); opacity: 1; }
+  to { transform: translate(var(--dx), var(--dy)) scale(0.2); opacity: 0; }
 }
 </style>
 </head>
@@ -64,6 +65,8 @@ html, body {
 <script>
 const match = document.getElementById("matchstick");
 const cake = document.getElementById("cake");
+const container = document.getElementById("container");
+
 let dragging = false;
 let offsetX = 0;
 let offsetY = 0;
@@ -71,47 +74,66 @@ let lit = false;
 
 match.addEventListener("touchstart", e => {
   dragging = true;
-  const touch = e.touches[0];
-  offsetX = touch.clientX - match.offsetLeft;
-  offsetY = touch.clientY - match.offsetTop;
-});
+  const t = e.touches[0];
+  offsetX = t.clientX - match.offsetLeft;
+  offsetY = t.clientY - match.offsetTop;
+}, { passive: false });
 
 document.addEventListener("touchmove", e => {
-  if (!dragging) return;
+  if (!dragging || lit) return;
   e.preventDefault();
 
-  const touch = e.touches[0];
-  match.style.left = (touch.clientX - offsetX) + "px";
-  match.style.top = (touch.clientY - offsetY) + "px";
+  const t = e.touches[0];
+  const x = t.clientX - offsetX;
+  const y = t.clientY - offsetY;
 
-  if (!lit && isTouching(match, cake)) {
+  match.style.left = x + "px";
+  match.style.top = y + "px";
+
+  // Detect ONLY candle top zone
+  const cakeRect = cake.getBoundingClientRect();
+  const tipX = x + match.offsetWidth;   // matchstick head
+  const tipY = y + 10;
+
+  const candleZone = {
+    left: cakeRect.left + cakeRect.width * 0.35,
+    right: cakeRect.left + cakeRect.width * 0.65,
+    top: cakeRect.top + 10,
+    bottom: cakeRect.top + 60
+  };
+
+  if (
+    tipX > candleZone.left &&
+    tipX < candleZone.right &&
+    tipY > candleZone.top &&
+    tipY < candleZone.bottom
+  ) {
     lit = true;
-    showSparkles();
+    sparkleBurst(cakeRect);
   }
+
 }, { passive: false });
 
 document.addEventListener("touchend", () => {
   dragging = false;
 });
 
-function isTouching(a, b) {
-  const r1 = a.getBoundingClientRect();
-  const r2 = b.getBoundingClientRect();
-  return !(
-    r1.right < r2.left ||
-    r1.left > r2.right ||
-    r1.bottom < r2.top ||
-    r1.top > r2.bottom
-  );
-}
-
-function showSparkles() {
-  for (let i = 0; i < 15; i++) {
+function sparkleBurst(cakeRect) {
+  for (let i = 0; i < 30; i++) {
     const s = document.createElement("div");
     s.className = "sparkle";
-    s.style.left = (cake.offsetLeft + 100 + Math.random()*60) + "px";
-    s.style.top = (cake.offsetTop + 40 + Math.random()*40) + "px";
-    document.body.appendChild(s);
+
+    const cx = cakeRect.left + cakeRect.width / 2;
+    const cy = cakeRect.top + 40;
+
+    s.style.left = cx + "px";
+    s.style.top = cy + "px";
+
+    s.style.setProperty("--dx", (Math.random() * 160 - 80) + "px");
+    s.style.setProperty("--dy", (-Math.random() * 160) + "px");
+
+    container.appendChild(s);
+    setTimeout(() => s.remove(), 1200);
   }
 }
 </script>
