@@ -31,9 +31,9 @@ html,body{
   background:radial-gradient(circle at top,#1e3c72,#000);
 }
 .swipe-text{
-  font-size:30px;
+  font-size:32px;
   text-align:center;
-  animation:pulse 1.4s infinite;
+  animation:pulse 1.5s infinite;
 }
 @keyframes pulse{
   0%,100%{opacity:.4}
@@ -45,9 +45,9 @@ html,body{
   background:radial-gradient(#0b1f3a,#000);
 }
 .wait-text{
-  font-size:34px;
+  font-size:40px;
   color:gold;
-  margin-bottom:25px;
+  margin-bottom:30px;
   text-align:center;
 }
 .envelope{
@@ -71,7 +71,7 @@ html,body{
 
 /* ---------- SCREEN 2 ---------- */
 #screen2{
-  background:linear-gradient(135deg,#3a0ca3,#7209b7);
+  background:linear-gradient(135deg,#5a189a,#9d4edd);
 }
 #cake{
   width:260px;
@@ -88,11 +88,11 @@ html,body{
   height:8px;
   background:gold;
   border-radius:50%;
-  animation:spark 1.8s ease-out;
+  animation:spark 2s ease-out;
 }
 @keyframes spark{
   from{opacity:1;transform:translateY(0)}
-  to{opacity:0;transform:translateY(-120px)}
+  to{opacity:0;transform:translateY(-140px)}
 }
 
 /* ---------- SCREEN 3 ---------- */
@@ -100,15 +100,15 @@ html,body{
 
 .star{
   position:absolute;
-  width:8px;
-  height:8px;
+  width:10px;
+  height:10px;
   background:white;
   clip-path:polygon(
     50% 0%,61% 38%,100% 50%,
     61% 62%,50% 100%,39% 62%,
     0% 50%,39% 38%
   );
-  animation:fall 9s linear infinite;
+  animation:fall 8s linear infinite;
 }
 @keyframes fall{
   from{transform:translateY(-200px)}
@@ -117,10 +117,7 @@ html,body{
 
 .firefly{
   position:absolute;
-  width:10px;
-  height:10px;
-  background:yellow;
-  border-radius:50%;
+  width:22px;
   animation:fly 6s ease-in-out infinite;
 }
 @keyframes fly{
@@ -129,8 +126,8 @@ html,body{
 
 .cloud{
   position:absolute;
-  top:80px;
-  width:280px;
+  top:70px;
+  width:300px;
   opacity:.9;
 }
 
@@ -138,7 +135,7 @@ html,body{
   position:absolute;
   bottom:-300px;
   text-align:center;
-  font-size:34px;
+  font-size:36px;
   font-weight:bold;
   color:#00ff66;
   z-index:10;
@@ -151,7 +148,7 @@ html,body{
   animation:textUp 3.5s ease forwards;
 }
 @keyframes textUp{
-  to{bottom:40%}
+  to{bottom:42%}
 }
 
 /* ---------- SCREEN 4 ---------- */
@@ -162,14 +159,14 @@ html,body{
   width:100%;
   max-height:80%;
   object-fit:contain;
-  animation:zoom 8s ease-in-out infinite;
+  animation:zoom 10s ease-in-out infinite;
 }
 @keyframes zoom{
-  50%{transform:scale(1.06)}
+  50%{transform:scale(1.05)}
 }
 .final-text{
   margin-top:15px;
-  font-size:32px;
+  font-size:38px;
   font-weight:bold;
   color:white;
   text-align:center;
@@ -230,14 +227,16 @@ function show(n){
   current=n;
 }
 
-/* Swipe only */
+/* SWIPE ONLY */
 window.addEventListener('touchstart',e=>{
   startY=e.touches[0].clientY;
 });
 window.addEventListener('touchend',e=>{
   if(startY===null) return;
   let endY=e.changedTouches[0].clientY;
-  if(startY-endY>80 && current===0) startEnvelope();
+  if(startY-endY>90 && current===0){
+    startEnvelope();
+  }
   startY=null;
 });
 
@@ -256,27 +255,27 @@ function startEnvelope(){
   },900);
 }
 
-/* Drag matchstick */
+/* DRAG MATCHSTICK */
 const stick=document.getElementById('matchstick');
 stick.addEventListener('touchmove',e=>{
   let t=e.touches[0];
   stick.style.position='absolute';
   stick.style.left=t.clientX-80+'px';
   stick.style.top=t.clientY-20+'px';
-  if(t.clientY<300){
+  if(t.clientY<280){
     lightCake();
   }
 },{once:true});
 
 function lightCake(){
   setTimeout(()=>{
-    for(let i=0;i<35;i++){
+    for(let i=0;i<40;i++){
       let s=document.createElement('div');
       s.className='sparkle';
       s.style.left='50%';
       s.style.bottom='260px';
       document.getElementById('screen2').appendChild(s);
-      setTimeout(()=>s.remove(),1800);
+      setTimeout(()=>s.remove(),2000);
     }
     music.play();
     show(3);
@@ -287,14 +286,15 @@ function lightCake(){
 
 function createSky(){
   const sky=document.getElementById('screen3');
-  for(let i=0;i<45;i++){
+  for(let i=0;i<50;i++){
     let st=document.createElement('div');
     st.className='star';
     st.style.left=Math.random()*window.innerWidth+'px';
     sky.appendChild(st);
   }
   for(let i=0;i<14;i++){
-    let f=document.createElement('div');
+    let f=document.createElement('img');
+    f.src='firefly.png';
     f.className='firefly';
     f.style.left=Math.random()*window.innerWidth+'px';
     f.style.top=350+Math.random()*300+'px';
