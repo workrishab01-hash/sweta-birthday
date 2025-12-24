@@ -10,7 +10,8 @@ html,body{
 margin:0;
 padding:0;
 height:100%;
-overflow:hidden;
+overflow:hidden; /* 🚫 stop scrolling */
+touch-action:none;
 font-family:Arial,Helvetica,sans-serif;
 background:black;
 color:white;
@@ -39,9 +40,7 @@ animation:float 2s infinite;
 }
 
 @keyframes float{
-0%{transform:translateY(0)}
 50%{transform:translateY(-12px)}
-100%{transform:translateY(0)}
 }
 
 /* ---------- SCREEN 1 ---------- */
@@ -50,7 +49,7 @@ background:radial-gradient(#101c2c,#000);
 }
 
 .envelopeText{
-font-size:28px;
+font-size:30px;
 color:gold;
 margin-bottom:20px;
 }
@@ -61,7 +60,6 @@ height:150px;
 background:#f5f5f5;
 border-radius:12px;
 position:relative;
-cursor:pointer;
 }
 
 .envelope::before{
@@ -73,8 +71,8 @@ background:#ddd;
 }
 
 .countdown{
+font-size:48px;
 margin-top:20px;
-font-size:42px;
 }
 
 /* ---------- SCREEN 2 ---------- */
@@ -89,9 +87,10 @@ width:260px;
 #matchstick{
 width:160px;
 position:absolute;
-bottom:60px;
-left:20px;
+left:30px;
+bottom:80px;
 touch-action:none;
+z-index:10;
 }
 
 .sparkle{
@@ -100,7 +99,7 @@ width:8px;
 height:8px;
 background:gold;
 border-radius:50%;
-animation:spark 1.5s ease-out forwards;
+animation:spark 1.2s ease-out forwards;
 }
 
 @keyframes spark{
@@ -109,8 +108,8 @@ to{transform:translateY(-80px);opacity:0}
 
 /* ---------- SCREEN 3 ---------- */
 #screen3{
-overflow:hidden;
 background:black;
+overflow:hidden;
 }
 
 .star{
@@ -122,12 +121,12 @@ clip-path:polygon(
 50% 0%,61% 38%,100% 50%,61% 62%,
 50% 100%,39% 62%,0% 50%,39% 38%
 );
-animation:fall 7s linear infinite;
+animation:fall 6s linear infinite;
 }
 
 @keyframes fall{
-from{transform:translateY(-100px) translateX(0)}
-to{transform:translateY(900px) translateX(-300px)}
+from{transform:translateY(-120px)}
+to{transform:translateY(900px)}
 }
 
 .moon{
@@ -144,19 +143,19 @@ box-shadow:-35px 0 0 10px black;
 .cloud{
 position:absolute;
 top:80px;
-right:-200px;
+right:-300px;
 width:300px;
 animation:cloudMove 25s linear infinite;
 }
 
 @keyframes cloudMove{
-to{transform:translateX(-500px)}
+to{transform:translateX(-600px)}
 }
 
 .firefly{
 position:absolute;
 width:22px;
-animation:fly 6s infinite;
+animation:fly 5s infinite;
 }
 
 @keyframes fly{
@@ -195,9 +194,8 @@ animation:zoom 20s linear infinite;
 .finalText{
 position:absolute;
 bottom:40px;
-font-size:28px;
+font-size:30px;
 font-weight:bold;
-color:white;
 text-align:center;
 }
 </style>
@@ -253,15 +251,22 @@ screens[n].classList.add('active');
 current=n;
 }
 
+/* SWIPE ONLY FOR SCREEN 0 */
 let startY=null;
-window.addEventListener('touchstart',e=>startY=e.touches[0].clientY);
+window.addEventListener('touchstart',e=>{
+if(current!==0) return;
+startY=e.touches[0].clientY;
+},{passive:false});
+
 window.addEventListener('touchend',e=>{
-if(startY && startY-e.changedTouches[0].clientY>80 && current===0){
+if(current!==0 || !startY) return;
+if(startY-e.changedTouches[0].clientY>80){
 show(1);
 }
 startY=null;
-});
+},{passive:false});
 
+/* COUNTDOWN */
 function startCountdown(){
 let c=3;
 const el=document.getElementById('count');
@@ -276,14 +281,15 @@ show(2);
 },1000);
 }
 
-/* DRAG MATCHSTICK */
+/* REAL DRAG FIX */
 const stick=document.getElementById('matchstick');
 const cake=document.getElementById('cake');
 
 stick.addEventListener('touchmove',e=>{
+e.preventDefault(); // 🚫 stop scrolling
 const t=e.touches[0];
 stick.style.left=t.clientX-80+'px';
-stick.style.top=t.clientY-20+'px';
+stick.style.top=t.clientY-40+'px';
 
 const s=stick.getBoundingClientRect();
 const c=cake.getBoundingClientRect();
@@ -296,12 +302,12 @@ sp.className='sparkle';
 sp.style.left=c.left+130+'px';
 sp.style.top=c.top+'px';
 document.body.appendChild(sp);
-setTimeout(()=>sp.remove(),1500);
+setTimeout(()=>sp.remove(),1200);
 }
-setTimeout(()=>show(3),3000);
+setTimeout(()=>show(3),2500);
 setTimeout(()=>show(4),14000);
 }
-});
+},{passive:false});
 </script>
 
 </body>
