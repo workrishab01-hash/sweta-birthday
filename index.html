@@ -11,12 +11,10 @@ html,body{
   padding:0;
   height:100%;
   overflow:hidden;
-  font-family:Arial, sans-serif;
   background:black;
-  touch-action:none;
+  font-family:Arial, sans-serif;
 }
 
-/* COMMON */
 .screen{
   position:absolute;
   inset:0;
@@ -31,83 +29,64 @@ html,body{
 #screen0{
   background:radial-gradient(#1a2a55,#000);
 }
-.swipeText{
-  font-size:28px;
+#screen0 p{
   color:white;
-  text-shadow:0 0 15px #ffffff;
-  animation:float 2s ease-in-out infinite;
-}
-@keyframes float{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-12px)}
+  font-size:28px;
+  text-shadow:0 0 15px white;
 }
 
 /* ---------- SCREEN 1 ---------- */
 #screen1{
   background:radial-gradient(#182b4a,#000);
 }
-.envelopeText{
+#screen1 h1{
+  color:gold;
   font-size:32px;
-  font-weight:bold;
-  background:linear-gradient(45deg,gold,#ffec9f);
-  -webkit-background-clip:text;
-  color:transparent;
-  margin-bottom:20px;
+  text-shadow:0 0 12px gold;
 }
 .envelope{
   width:240px;
   height:150px;
-  background:#f5f5f5;
+  background:#f2f2f2;
   border-radius:12px;
-  position:relative;
 }
-.envelope:before{
-  content:'';
-  position:absolute;
-  inset:0;
-  clip-path:polygon(0 0,100% 0,50% 55%);
-  background:#ddd;
-}
-.countdown{
-  font-size:54px;
+#count{
   color:white;
+  font-size:52px;
   text-shadow:0 0 15px white;
-  margin-top:20px;
 }
 
 /* ---------- SCREEN 2 ---------- */
 #screen2{
   background:#c40000;
 }
-.hint{
-  position:absolute;
-  top:6%;
-  font-size:26px;
+#hint{
   color:white;
-  width:100%;
-  text-align:center;
+  font-size:22px;
+  text-shadow:0 0 10px white;
+  margin-bottom:20px;
 }
 #cake{
-  width:80%;
-  max-width:320px;
+  width:300px;
 }
-#matchstick{
-  width:160px;
+#match{
+  width:150px;
   position:absolute;
-  bottom:12%;
-  left:10%;
+  bottom:60px;
+  left:30px;
   touch-action:none;
 }
-.sparkle{
+.spark{
   position:absolute;
   width:10px;
   height:10px;
   background:gold;
   border-radius:50%;
+  box-shadow:0 0 10px gold;
   animation:spark 1s linear forwards;
 }
 @keyframes spark{
-  to{opacity:0;transform:translate(var(--x),var(--y)) scale(0)}
+  to{opacity:0;transform:translate(var(--x),var(--y))}
 }
 
 /* ---------- SCREEN 3 ---------- */
@@ -123,79 +102,49 @@ html,body{
   height:120px;
   border-radius:50%;
   background:white;
-  box-shadow:-35px 0 0 10px black;
-}
-.cloud{
-  position:absolute;
-  top:90px;
-  right:10px;
-  width:220px;
-  animation:cloudMove 25s linear infinite;
-}
-@keyframes cloudMove{
-  to{transform:translateX(-160px)}
+  box-shadow:-35px 0 0 black;
 }
 .star{
   position:absolute;
-  width:6px;
-  height:6px;
+  width:5px;
+  height:5px;
   background:white;
-  clip-path:polygon(
-    50% 0%,61% 38%,100% 50%,
-    61% 62%,50% 100%,39% 62%,
-    0% 50%,39% 38%
-  );
   animation:fall 6s linear infinite;
 }
 @keyframes fall{
-  to{transform:translate(-500px,120vh)}
+  to{transform:translate(-400px,120vh)}
 }
 .firefly{
   position:absolute;
-  width:22px;
-  filter:drop-shadow(0 0 10px yellow);
-  animation:fly 6s ease-in-out infinite;
+  width:18px;
+  height:18px;
+  background:yellow;
+  border-radius:50%;
+  box-shadow:0 0 15px yellow;
+  animation:fly 5s ease-in-out infinite;
 }
 @keyframes fly{
-  50%{opacity:1}
+  50%{transform:translate(40px,-40px)}
 }
-.birthdayText{
-  position:absolute;
-  bottom:-250px;
-  text-align:center;
+#text3{
+  color:#00ff66;
   font-size:30px;
   font-weight:bold;
-  color:#00ff66;
-  -webkit-text-stroke:1px white;
-  text-shadow:0 0 15px #00ff66;
-  line-height:1.8;
-  animation:textUp 3s forwards;
-}
-@keyframes textUp{
-  to{bottom:35%}
+  text-shadow:0 0 12px #00ff66;
+  text-align:center;
+  margin-top:200px;
 }
 
 /* ---------- SCREEN 4 ---------- */
 #screen4{
   background:black;
 }
-#temple{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  animation:zoom 10s ease-in-out infinite;
-}
-@keyframes zoom{
-  50%{transform:scale(1.05)}
-}
-.finalWish{
-  position:absolute;
-  bottom:8%;
-  text-align:center;
-  font-size:22px;
+#screen4 p{
   color:white;
-  text-shadow:0 0 12px #ffffff;
-  padding:0 10px;
+  font-size:22px;
+  text-shadow:0 0 10px white;
+  text-align:center;
+  padding:20px;
 }
 
 audio{display:none}
@@ -208,28 +157,27 @@ audio{display:none}
 
 <!-- SCREEN 0 -->
 <div class="screen active" id="screen0">
-  <div class="swipeText">Swipe up to explore something magical ✨⬆️</div>
+  <p>Swipe up to explore something magical ✨</p>
 </div>
 
 <!-- SCREEN 1 -->
 <div class="screen" id="screen1">
-  <div class="envelopeText">Something special is waiting…</div>
+  <h1>Something special is waiting…</h1>
   <div class="envelope"></div>
-  <div class="countdown" id="count"></div>
+  <div id="count"></div>
 </div>
 
 <!-- SCREEN 2 -->
 <div class="screen" id="screen2">
-  <div class="hint">Hold & drag the matchstick to light the candle 🔥</div>
+  <div id="hint">Drag the matchstick to the candle & hold 🔥</div>
   <img id="cake" src="cake.png">
-  <img id="matchstick" src="matchstick.png">
+  <img id="match" src="matchstick.png">
 </div>
 
 <!-- SCREEN 3 -->
 <div class="screen" id="screen3">
   <div class="moon"></div>
-  <img src="cloud.png" class="cloud">
-  <div class="birthdayText">
+  <div id="text3">
     HAPPY BIRTHDAY<br>
     SWETA CHOUDHARY SINGH<br>
     STAY HAPPY & BLESSED
@@ -238,99 +186,103 @@ audio{display:none}
 
 <!-- SCREEN 4 -->
 <div class="screen" id="screen4">
-  <img id="temple" src="temple_couple.jpg">
-  <div class="finalWish">
-    May your life always shine with peace, love and happiness.<br>
-    May every dream you hold come true. ✨
-  </div>
+  <p>
+    May your life glow with peace, love and happiness.<br>
+    May every dream you hold come true ✨
+  </p>
 </div>
 
 <script>
+let screens=document.querySelectorAll('.screen');
+let music=document.getElementById('music');
 let current=0;
-const screens=document.querySelectorAll('.screen');
-const music=document.getElementById('music');
 function show(n){
   screens.forEach(s=>s.classList.remove('active'));
   screens[n].classList.add('active');
   current=n;
 }
 
-/* SWIPE */
-let startY=0;
-window.addEventListener('touchstart',e=>startY=e.touches[0].clientY);
+/* swipe */
+let sy=0;
+window.addEventListener('touchstart',e=>sy=e.touches[0].clientY);
 window.addEventListener('touchend',e=>{
-  let endY=e.changedTouches[0].clientY;
-  if(current===0 && startY-endY>60) show(1);
+  if(current===0 && sy-e.changedTouches[0].clientY>60) show(1);
 });
 
-/* COUNTDOWN */
+/* envelope */
 document.querySelector('.envelope').onclick=()=>{
   let c=3;
-  const el=document.getElementById('count');
+  let el=document.getElementById('count');
   el.textContent=c;
-  const i=setInterval(()=>{
+  let i=setInterval(()=>{
     c--;
-    if(c===0){
-      clearInterval(i);
-      show(2);
-    }else el.textContent=c;
+    if(c===0){clearInterval(i);show(2);}
+    else el.textContent=c;
   },700);
 };
 
-/* DRAG MATCHSTICK */
-const stick=document.getElementById('matchstick');
-const cake=document.getElementById('cake');
-let dragging=false,ox=0,oy=0;
+/* drag logic */
+let match=document.getElementById('match');
+let cake=document.getElementById('cake');
+let dragging=false,holdTimer=null;
 
-stick.addEventListener('touchstart',e=>{
+match.addEventListener('touchstart',e=>{
   dragging=true;
-  ox=e.touches[0].clientX-stick.offsetLeft;
-  oy=e.touches[0].clientY-stick.offsetTop;
 });
 window.addEventListener('touchmove',e=>{
   if(!dragging) return;
-  stick.style.left=e.touches[0].clientX-ox+'px';
-  stick.style.top=e.touches[0].clientY-oy+'px';
-  const s=stick.getBoundingClientRect();
-  const c=cake.getBoundingClientRect();
-  if(s.right>c.left+120 && s.left<c.right-120 && s.top<c.top+80){
-    ignite();
+  match.style.left=e.touches[0].clientX-40+'px';
+  match.style.top=e.touches[0].clientY-40+'px';
+
+  let m=match.getBoundingClientRect();
+  let c=cake.getBoundingClientRect();
+
+  if(m.top < c.top+40 && m.left > c.left+100 && m.right < c.right-100){
+    if(!holdTimer){
+      holdTimer=setTimeout(ignite,1200);
+    }
+  }else{
+    clearTimeout(holdTimer);
+    holdTimer=null;
   }
 });
-window.addEventListener('touchend',()=>dragging=false);
+window.addEventListener('touchend',()=>{
+  dragging=false;
+  clearTimeout(holdTimer);
+  holdTimer=null;
+});
 
 function ignite(){
-  dragging=false;
   for(let i=0;i<40;i++){
-    const sp=document.createElement('div');
-    sp.className='sparkle';
-    sp.style.left='50%';
-    sp.style.top='45%';
-    sp.style.setProperty('--x',(Math.random()*300-150)+'px');
-    sp.style.setProperty('--y',(Math.random()*300-150)+'px');
-    document.body.appendChild(sp);
-    setTimeout(()=>sp.remove(),1000);
+    let s=document.createElement('div');
+    s.className='spark';
+    s.style.left='50%';
+    s.style.top='45%';
+    s.style.setProperty('--x',(Math.random()*300-150)+'px');
+    s.style.setProperty('--y',(Math.random()*300-150)+'px');
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),1000);
   }
   music.play();
-  show(3);
+  setTimeout(()=>show(3),2000);
   setTimeout(()=>show(4),12000);
 }
 
-/* STARS & FIREFLIES */
-for(let i=0;i<80;i++){
-  const st=document.createElement('div');
+/* stars + fireflies */
+let s3=document.getElementById('screen3');
+for(let i=0;i<60;i++){
+  let st=document.createElement('div');
   st.className='star';
   st.style.left=Math.random()*100+'vw';
   st.style.animationDelay=Math.random()*6+'s';
-  document.getElementById('screen3').appendChild(st);
+  s3.appendChild(st);
 }
-for(let i=0;i<10;i++){
-  const f=document.createElement('img');
-  f.src='firefly.png';
+for(let i=0;i<12;i++){
+  let f=document.createElement('div');
   f.className='firefly';
   f.style.left=Math.random()*100+'vw';
   f.style.top=Math.random()*100+'vh';
-  document.getElementById('screen3').appendChild(f);
+  s3.appendChild(f);
 }
 </script>
 
