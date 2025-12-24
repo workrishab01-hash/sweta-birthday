@@ -10,7 +10,7 @@ html,body{
 margin:0;
 padding:0;
 height:100%;
-overflow:hidden; /* 🚫 stop scrolling */
+overflow:hidden;
 touch-action:none;
 font-family:Arial,Helvetica,sans-serif;
 background:black;
@@ -25,177 +25,114 @@ justify-content:center;
 align-items:center;
 flex-direction:column;
 }
-
 .screen.active{display:flex}
 
-/* ---------- SCREEN 0 ---------- */
+/* SCREEN 0 */
 #screen0{
 background:radial-gradient(#0a1b3d,#000);
-text-align:center;
 }
-
 .swipeText{
-font-size:22px;
-animation:float 2s infinite;
+font-size:24px;
+animation:pulse 1.5s infinite;
+}
+@keyframes pulse{
+50%{opacity:.5}
 }
 
-@keyframes float{
-50%{transform:translateY(-12px)}
-}
-
-/* ---------- SCREEN 1 ---------- */
+/* SCREEN 1 */
 #screen1{
-background:radial-gradient(#101c2c,#000);
+background:#0f1c2e;
 }
-
 .envelopeText{
 font-size:30px;
 color:gold;
 margin-bottom:20px;
 }
-
 .envelope{
-width:240px;
-height:150px;
+width:240px;height:150px;
 background:#f5f5f5;
-border-radius:12px;
+border-radius:14px;
 position:relative;
 }
-
-.envelope::before{
+.envelope:before{
 content:'';
 position:absolute;
 inset:0;
-clip-path:polygon(0 0,100% 0,50% 55%);
 background:#ddd;
+clip-path:polygon(0 0,100% 0,50% 55%);
 }
-
-.countdown{
+.count{
 font-size:48px;
 margin-top:20px;
 }
 
-/* ---------- SCREEN 2 ---------- */
+/* SCREEN 2 */
 #screen2{
-background:#b30000;
+background:#c40000;
 }
-
 #cake{
 width:260px;
 }
-
 #matchstick{
 width:160px;
 position:absolute;
-left:30px;
 bottom:80px;
-touch-action:none;
-z-index:10;
+left:20px;
+cursor:grab;
 }
-
 .sparkle{
 position:absolute;
-width:8px;
-height:8px;
+width:8px;height:8px;
 background:gold;
 border-radius:50%;
-animation:spark 1.2s ease-out forwards;
+animation:spark 1.5s ease-out forwards;
 }
-
 @keyframes spark{
-to{transform:translateY(-80px);opacity:0}
+to{transform:translateY(-100px);opacity:0}
 }
 
-/* ---------- SCREEN 3 ---------- */
-#screen3{
-background:black;
-overflow:hidden;
-}
-
+/* SCREEN 3 */
+#screen3{background:black;overflow:hidden;}
 .star{
 position:absolute;
-width:6px;
-height:6px;
+width:6px;height:6px;
 background:white;
 clip-path:polygon(
-50% 0%,61% 38%,100% 50%,61% 62%,
-50% 100%,39% 62%,0% 50%,39% 38%
+50% 0%,61% 38%,100% 50%,
+61% 62%,50% 100%,39% 62%,
+0% 50%,39% 38%
 );
-animation:fall 6s linear infinite;
+animation:fall 7s linear infinite;
 }
-
 @keyframes fall{
-from{transform:translateY(-120px)}
-to{transform:translateY(900px)}
+from{transform:translateY(-150px)}
+to{transform:translateY(120vh)}
 }
-
-.moon{
-position:absolute;
-top:50px;
-right:40px;
-width:120px;
-height:120px;
-background:white;
-border-radius:50%;
-box-shadow:-35px 0 0 10px black;
-}
-
-.cloud{
-position:absolute;
-top:80px;
-right:-300px;
-width:300px;
-animation:cloudMove 25s linear infinite;
-}
-
-@keyframes cloudMove{
-to{transform:translateX(-600px)}
-}
-
-.firefly{
-position:absolute;
-width:22px;
-animation:fly 5s infinite;
-}
-
-@keyframes fly{
-50%{transform:translate(40px,-30px)}
-}
-
 .birthdayText{
 position:absolute;
 bottom:-200px;
-font-size:30px;
+font-size:28px;
 font-weight:bold;
-text-align:center;
 color:#00ff66;
 -webkit-text-stroke:1px white;
 animation:textUp 3s forwards;
 }
-
 @keyframes textUp{
-to{bottom:200px}
+to{bottom:40%}
 }
 
-/* ---------- SCREEN 4 ---------- */
-#screen4{
-background:black;
-}
-
+/* SCREEN 4 */
+#screen4{background:black;}
 #temple{
 width:100%;
-animation:zoom 20s linear infinite;
+animation:zoom 15s infinite;
 }
-
 @keyframes zoom{
-50%{transform:scale(1.08)}
+50%{transform:scale(1.06)}
 }
-
 .finalText{
-position:absolute;
-bottom:40px;
 font-size:30px;
-font-weight:bold;
+margin-top:20px;
 text-align:center;
 }
 </style>
@@ -205,28 +142,22 @@ text-align:center;
 
 <audio id="music" src="birthday.webm"></audio>
 
-<!-- Screen 0 -->
 <div class="screen active" id="screen0">
-<div class="swipeText">Swipe up to explore something magical ✨⬆️</div>
+<div class="swipeText">Swipe up to begin ✨⬆️</div>
 </div>
 
-<!-- Screen 1 -->
 <div class="screen" id="screen1">
 <div class="envelopeText">Something special is waiting…</div>
-<div class="envelope" onclick="startCountdown()"></div>
-<div class="countdown" id="count"></div>
+<div class="envelope" id="env"></div>
+<div class="count" id="count"></div>
 </div>
 
-<!-- Screen 2 -->
 <div class="screen" id="screen2">
 <img id="cake" src="cake.png">
 <img id="matchstick" src="matchstick.png">
 </div>
 
-<!-- Screen 3 -->
 <div class="screen" id="screen3">
-<div class="moon"></div>
-<img src="cloud.png" class="cloud">
 <div class="birthdayText">
 HAPPY BIRTHDAY<br>
 SWETA CHOUDHARY SINGH<br>
@@ -234,16 +165,15 @@ STAY HAPPY & BLESSED
 </div>
 </div>
 
-<!-- Screen 4 -->
 <div class="screen" id="screen4">
 <img id="temple" src="temple_couple.jpg">
-<div class="finalText">May your life always shine with love & blessings ✨</div>
+<div class="finalText">With love & blessings ✨</div>
 </div>
 
 <script>
-let current=0;
 const screens=document.querySelectorAll('.screen');
 const music=document.getElementById('music');
+let current=0;
 
 function show(n){
 screens.forEach(s=>s.classList.remove('active'));
@@ -251,50 +181,53 @@ screens[n].classList.add('active');
 current=n;
 }
 
-/* SWIPE ONLY FOR SCREEN 0 */
+/* Swipe ONLY for screen 0 */
 let startY=null;
-window.addEventListener('touchstart',e=>{
-if(current!==0) return;
-startY=e.touches[0].clientY;
-},{passive:false});
-
-window.addEventListener('touchend',e=>{
-if(current!==0 || !startY) return;
-if(startY-e.changedTouches[0].clientY>80){
+window.addEventListener('pointerdown',e=>{
+if(current===0) startY=e.clientY;
+});
+window.addEventListener('pointerup',e=>{
+if(current===0 && startY-e.clientY>80){
 show(1);
 }
 startY=null;
-},{passive:false});
+});
 
-/* COUNTDOWN */
-function startCountdown(){
+/* Countdown */
+document.getElementById('env').onclick=()=>{
 let c=3;
 const el=document.getElementById('count');
 el.textContent=c;
-let i=setInterval(()=>{
+const t=setInterval(()=>{
 c--;
 el.textContent=c;
 if(c===0){
-clearInterval(i);
+clearInterval(t);
 show(2);
 }
-},1000);
-}
+},900);
+};
 
-/* REAL DRAG FIX */
+/* POINTER DRAG (FINAL FIX) */
 const stick=document.getElementById('matchstick');
 const cake=document.getElementById('cake');
+let dragging=false;
 
-stick.addEventListener('touchmove',e=>{
-e.preventDefault(); // 🚫 stop scrolling
-const t=e.touches[0];
-stick.style.left=t.clientX-80+'px';
-stick.style.top=t.clientY-40+'px';
+stick.addEventListener('pointerdown',e=>{
+dragging=true;
+stick.setPointerCapture(e.pointerId);
+});
+
+stick.addEventListener('pointermove',e=>{
+if(!dragging) return;
+stick.style.left=e.clientX-80+'px';
+stick.style.top=e.clientY-40+'px';
 
 const s=stick.getBoundingClientRect();
 const c=cake.getBoundingClientRect();
 
 if(s.right>c.left && s.left<c.right && s.bottom>c.top && s.top<c.bottom){
+dragging=false;
 music.play();
 for(let i=0;i<30;i++){
 const sp=document.createElement('div');
@@ -302,12 +235,14 @@ sp.className='sparkle';
 sp.style.left=c.left+130+'px';
 sp.style.top=c.top+'px';
 document.body.appendChild(sp);
-setTimeout(()=>sp.remove(),1200);
+setTimeout(()=>sp.remove(),1500);
 }
-setTimeout(()=>show(3),2500);
-setTimeout(()=>show(4),14000);
+setTimeout(()=>show(3),3000);
+setTimeout(()=>show(4),13000);
 }
-},{passive:false});
+});
+
+stick.addEventListener('pointerup',()=>dragging=false);
 </script>
 
 </body>
