@@ -10,8 +10,7 @@ html,body{
   margin:0;padding:0;height:100%;
   overflow:hidden;
   background:#000;
-  font-family: 'Arial', sans-serif;
-  color:#fff;
+  font-family:Arial,sans-serif;
 }
 
 .screen{
@@ -21,50 +20,54 @@ html,body{
   justify-content:center;
   align-items:center;
   flex-direction:column;
+  color:#fff;
 }
-
 .screen.active{display:flex}
 
-/* -------- SCREEN 0 -------- */
+/* ---------- SCREEN 0 ---------- */
 #screen0{
-  background:radial-gradient(circle at top,#2b3d6e,#000);
+  background:radial-gradient(circle at top,#243b6b,#000);
 }
-.intro{
+.swipe-text{
   font-size:26px;
   text-align:center;
-  animation:fadePulse 2s infinite;
+  animation:blink 1.5s infinite;
 }
-@keyframes fadePulse{
-  0%{opacity:.4}
+@keyframes blink{
+  0%,100%{opacity:.4}
   50%{opacity:1}
-  100%{opacity:.4}
 }
 
-/* -------- SCREEN 1 -------- */
+/* ---------- SCREEN 1 ---------- */
 #screen1{
-  background:radial-gradient(#0b1a2f,#000);
+  background:radial-gradient(#0c1f3f,#000);
+}
+.wait-text{
+  font-size:28px;
+  color:gold;
+  margin-bottom:20px;
 }
 .envelope{
-  width:230px;height:150px;
-  background:#f7f7f7;
-  border-radius:14px;
+  width:240px;height:160px;
+  background:#f8f8f8;
+  border-radius:16px;
   position:relative;
 }
 .envelope:before{
   content:'';
   position:absolute;
   inset:0;
-  background:#ddd;
+  background:#e0e0e0;
   clip-path:polygon(0 0,100% 0,50% 55%);
 }
 .count{
-  font-size:48px;
+  font-size:56px;
   margin-top:20px;
 }
 
-/* -------- SCREEN 2 -------- */
+/* ---------- SCREEN 2 ---------- */
 #screen2{
-  background:linear-gradient(135deg,#7b2cbf,#240046);
+  background:linear-gradient(135deg,#6a0572,#240046);
 }
 #cake{width:260px}
 #matchstick{
@@ -81,11 +84,11 @@ html,body{
   animation:spark 1.5s linear;
 }
 @keyframes spark{
-  from{transform:translateY(0);opacity:1}
-  to{transform:translateY(-80px);opacity:0}
+  from{opacity:1;transform:translateY(0)}
+  to{opacity:0;transform:translateY(-80px)}
 }
 
-/* -------- SCREEN 3 -------- */
+/* ---------- SCREEN 3 ---------- */
 #screen3{overflow:hidden}
 .star{
   position:absolute;
@@ -96,30 +99,11 @@ html,body{
     61% 62%,50% 100%,39% 62%,
     0% 50%,39% 38%
   );
-  animation:shoot 8s linear infinite;
+  animation:fall 8s linear infinite;
 }
-@keyframes shoot{
-  from{transform:translate(200px,-200px);opacity:1}
-  to{transform:translate(-800px,900px);opacity:0}
-}
-
-.moon{
-  position:absolute;
-  top:60px;right:40px;
-  width:120px;height:120px;
-  border-radius:50%;
-  background:white;
-  box-shadow:-35px 0 0 14px black;
-}
-
-.cloud{
-  position:absolute;
-  top:100px;right:-200px;
-  width:280px;
-  animation:cloudMove 40s linear infinite;
-}
-@keyframes cloudMove{
-  to{transform:translateX(-500px)}
+@keyframes fall{
+  from{transform:translateY(-200px)}
+  to{transform:translateY(120vh)}
 }
 
 .firefly{
@@ -130,36 +114,50 @@ html,body{
   animation:fly 6s ease-in-out infinite;
 }
 @keyframes fly{
-  50%{transform:translate(50px,-40px);opacity:1}
+  50%{transform:translate(40px,-30px);opacity:1}
 }
 
-.birthday-text{
+.cloud{
   position:absolute;
-  top:45%;
-  transform:translateY(-50%);
+  top:90px;
+  width:260px;
+}
+
+.text{
+  position:absolute;
+  bottom:-200px;
   text-align:center;
   font-size:30px;
   font-weight:bold;
   color:#00ff66;
-  text-shadow:0 0 30px #00ff66;
+  text-shadow:
+    -1px -1px 0 #fff,
+     1px -1px 0 #fff,
+    -1px  1px 0 #fff,
+     1px  1px 0 #fff,
+     0 0 25px #00ff66;
+  animation:textUp 3s forwards;
+}
+@keyframes textUp{
+  to{bottom:40%}
 }
 
-/* -------- SCREEN 4 -------- */
+/* ---------- SCREEN 4 ---------- */
+#screen4{
+  background:#000;
+}
 #temple{
   width:100%;
-  max-height:100%;
   object-fit:contain;
-  animation:float 8s ease-in-out infinite;
+  animation:zoom 8s ease-in-out infinite;
 }
-@keyframes float{
-  50%{transform:scale(1.05) translateY(-10px)}
+@keyframes zoom{
+  50%{transform:scale(1.05)}
 }
-.replay{
-  margin-top:15px;
-  padding:10px 24px;
-  background:#00ff66;
-  color:#000;
-  border-radius:20px;
+.final-text{
+  margin-top:20px;
+  font-size:30px;
+  font-weight:bold;
 }
 
 audio{display:none}
@@ -168,15 +166,15 @@ audio{display:none}
 
 <body>
 
-<audio id="music" src="birthday.webm" loop></audio>
+<audio id="music" src="birthday.webm"></audio>
 
 <div class="screen active" id="screen0">
-  <div class="intro">Swipe up to begin a beautiful surprise ✨</div>
+  <div class="swipe-text">Swipe up to begin something magical ✨⬆️</div>
 </div>
 
 <div class="screen" id="screen1">
-  <div>Something special is waiting…</div>
-  <div class="envelope" id="env"></div>
+  <div class="wait-text">Something special is waiting…</div>
+  <div class="envelope"></div>
   <div class="count" id="count"></div>
 </div>
 
@@ -186,9 +184,8 @@ audio{display:none}
 </div>
 
 <div class="screen" id="screen3">
-  <div class="moon"></div>
   <img src="cloud.png" class="cloud">
-  <div class="birthday-text">
+  <div class="text">
     HAPPY BIRTHDAY<br>
     SWETA CHOUDHARY SINGH<br>
     STAY HAPPY & BLESSED
@@ -197,13 +194,13 @@ audio{display:none}
 
 <div class="screen" id="screen4">
   <img id="temple" src="temple_couple.jpg">
-  <div class="replay" onclick="resetAll()">Replay</div>
+  <div class="final-text">May your life always shine with love & peace ✨</div>
 </div>
 
 <script>
 const screens=document.querySelectorAll('.screen');
+let current=0,startY=null;
 const music=document.getElementById('music');
-let current=0, timer;
 
 function show(n){
   screens.forEach(s=>s.classList.remove('active'));
@@ -211,74 +208,76 @@ function show(n){
   current=n;
 }
 
-window.addEventListener('touchstart',()=>{
-  if(current===0) show(1);
+/* Swipe only */
+window.addEventListener('touchstart',e=>{
+  startY=e.touches[0].clientY;
+});
+window.addEventListener('touchend',e=>{
+  if(startY===null) return;
+  let endY=e.changedTouches[0].clientY;
+  if(startY-endY>80 && current===0) startEnvelope();
+  startY=null;
 });
 
-document.getElementById('env').onclick=()=>{
+function startEnvelope(){
+  show(1);
   let c=3;
   const el=document.getElementById('count');
   el.textContent=c;
-  clearInterval(timer);
-  timer=setInterval(()=>{
+  let t=setInterval(()=>{
     c--;
     if(c===0){
-      clearInterval(timer);
+      clearInterval(t);
       el.textContent='';
       show(2);
     } else el.textContent=c;
   },800);
-};
+}
 
+/* Drag matchstick */
 const stick=document.getElementById('matchstick');
 stick.addEventListener('touchmove',e=>{
-  const t=e.touches[0];
+  let t=e.touches[0];
   stick.style.position='absolute';
   stick.style.left=t.clientX-80+'px';
   stick.style.top=t.clientY-20+'px';
-  if(t.clientY<300) lightCake();
-});
-
-function lightCake(){
-  if(current!==2) return;
-  music.play();
-  for(let i=0;i<20;i++){
-    const s=document.createElement('div');
-    s.className='sparkle';
-    s.style.left='50%';
-    s.style.bottom='240px';
-    document.getElementById('screen2').appendChild(s);
-    setTimeout(()=>s.remove(),1500);
+  if(t.clientY<300){
+    light();
   }
-  show(3);
-  createStars();
-  setTimeout(()=>show(4),12000);
+},{once:true});
+
+function light(){
+  setTimeout(()=>{
+    for(let i=0;i<25;i++){
+      let s=document.createElement('div');
+      s.className='sparkle';
+      s.style.left='50%';
+      s.style.bottom='250px';
+      document.getElementById('screen2').appendChild(s);
+      setTimeout(()=>s.remove(),1500);
+    }
+    music.play();
+    show(3);
+    starsAndFireflies();
+    setTimeout(()=>show(4),12000);
+  },2000);
 }
 
-function createStars(){
+function starsAndFireflies(){
   const sky=document.getElementById('screen3');
-  sky.querySelectorAll('.star,.firefly').forEach(e=>e.remove());
-  for(let i=0;i<35;i++){
-    const st=document.createElement('div');
+  for(let i=0;i<40;i++){
+    let st=document.createElement('div');
     st.className='star';
     st.style.left=Math.random()*window.innerWidth+'px';
     sky.appendChild(st);
   }
-  for(let i=0;i<8;i++){
-    const f=document.createElement('div');
+  for(let i=0;i<12;i++){
+    let f=document.createElement('div');
     f.className='firefly';
     f.style.left=Math.random()*window.innerWidth+'px';
     f.style.top=300+Math.random()*300+'px';
     sky.appendChild(f);
   }
-}
-
-function resetAll(){
-  clearInterval(timer);
-  music.pause(); music.currentTime=0;
-  document.getElementById('count').textContent='';
-  stick.style.position='relative';
-  show(0);
 }
 </script>
 
