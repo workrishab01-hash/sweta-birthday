@@ -6,11 +6,17 @@
 <title>Birthday Surprise</title>
 
 <style>
-html,body{
+*{
   margin:0;
   padding:0;
+  box-sizing:border-box;
+  user-select:none;
+}
+
+html,body{
+  width:100%;
   height:100%;
-  overflow:hidden;
+  overflow:hidden; /* VERY IMPORTANT */
   background:black;
   font-family:Arial, sans-serif;
 }
@@ -31,11 +37,11 @@ html,body{
 }
 #screen0 p{
   color:white;
-  font-size:28px;
+  font-size:26px;
   text-shadow:0 0 15px white;
 }
 
-/* ---------- SCREEN 1 ---------- */
+/* ---------- SCREEN 1 (ENVELOPE) ---------- */
 #screen1{
   background:radial-gradient(#182b4a,#000);
 }
@@ -43,16 +49,34 @@ html,body{
   color:gold;
   font-size:32px;
   text-shadow:0 0 12px gold;
+  margin-bottom:30px;
 }
+
+/* envelope body */
 .envelope{
-  width:240px;
-  height:150px;
-  background:#f2f2f2;
+  width:260px;
+  height:170px;
+  background:#f5f5f5;
   border-radius:12px;
+  position:relative;
 }
+
+/* envelope flap */
+.envelope::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:#e0e0e0;
+  clip-path:polygon(0 0,100% 0,50% 55%);
+}
+
 #count{
+  margin-top:20px;
+  font-size:50px;
   color:white;
-  font-size:52px;
   text-shadow:0 0 15px white;
 }
 
@@ -63,21 +87,23 @@ html,body{
 #hint{
   color:white;
   font-size:22px;
+  margin-bottom:15px;
   text-shadow:0 0 10px white;
-  margin-bottom:20px;
 }
+
 #cake{
-  width:300px;
+  width:280px;
 }
+
 #match{
   width:150px;
   position:absolute;
-  bottom:60px;
+  bottom:50px;
   left:30px;
-  touch-action:none;
+  touch-action:none; /* CRITICAL */
 }
 
-/* sparkles ONLY for cake screen */
+/* sparkles */
 .spark{
   position:absolute;
   width:10px;
@@ -94,7 +120,7 @@ html,body{
   }
 }
 
-/* ---------- SCREEN 3 (SHOOTING STAR) ---------- */
+/* ---------- SCREEN 3 ---------- */
 #screen3{
   background:black;
   overflow:hidden;
@@ -105,15 +131,9 @@ html,body{
   right:40px;
   width:120px;
   height:120px;
-  border-radius:50%;
   background:white;
+  border-radius:50%;
   box-shadow:-35px 0 0 black;
-}
-.cloud{
-  position:absolute;
-  top:120px;
-  width:220px;
-  opacity:0.9;
 }
 
 /* shooting stars */
@@ -126,14 +146,8 @@ html,body{
   animation:shoot 6s linear infinite;
 }
 @keyframes shoot{
-  from{
-    transform:translate(0,-120px);
-    opacity:1;
-  }
-  to{
-    transform:translate(-500px,120vh);
-    opacity:0;
-  }
+  from{transform:translate(0,-120px);opacity:1;}
+  to{transform:translate(-400px,120vh);opacity:0;}
 }
 
 /* fireflies */
@@ -147,33 +161,27 @@ html,body{
   animation:fly 4s ease-in-out infinite;
 }
 @keyframes fly{
-  50%{transform:translate(40px,-40px)}
+  50%{transform:translate(40px,-40px);}
 }
 
 #text3{
   color:#00ff66;
-  font-size:30px;
+  font-size:28px;
   font-weight:bold;
+  text-align:center;
   text-shadow:
     0 0 10px white,
     0 0 18px #00ff66;
-  text-align:center;
-  margin-top:220px;
+  margin-top:240px;
 }
 
-/* ---------- SCREEN 4 (LAST / TEMPLE) ---------- */
-#screen4{
-  background:black;
-}
+/* ---------- SCREEN 4 ---------- */
 #screen4 p{
   color:gold;
   font-size:24px;
   text-align:center;
-  line-height:1.6;
-  text-shadow:
-    0 0 12px gold,
-    0 0 20px orange;
   padding:20px;
+  text-shadow:0 0 15px gold;
 }
 
 audio{display:none}
@@ -215,62 +223,83 @@ audio{display:none}
 
 <!-- SCREEN 4 -->
 <div class="screen" id="screen4">
-  <p>
-    May your life always glow with peace and love,<br>
-    and may every wish your heart holds come true ✨
-  </p>
+  <p>May your life glow with love, peace and endless happiness ✨</p>
 </div>
 
 <script>
 let screens=document.querySelectorAll('.screen');
-let music=document.getElementById('music');
 let current=0;
+let music=document.getElementById('music');
+
 function show(n){
   screens.forEach(s=>s.classList.remove('active'));
   screens[n].classList.add('active');
   current=n;
 }
 
-/* swipe */
-let sy=0;
-window.addEventListener('touchstart',e=>sy=e.touches[0].clientY);
-window.addEventListener('touchend',e=>{
-  if(current===0 && sy-e.changedTouches[0].clientY>60) show(1);
-});
+/* swipe detection */
+let startY=0;
+window.addEventListener('touchstart',e=>{
+  startY=e.touches[0].clientY;
+},{passive:false});
 
-/* envelope */
+window.addEventListener('touchend',e=>{
+  if(current===0 && startY-e.changedTouches[0].clientY>60){
+    show(1);
+  }
+},{passive:false});
+
+/* envelope click */
 document.querySelector('.envelope').onclick=()=>{
   let c=3;
   let el=document.getElementById('count');
   el.textContent=c;
   let i=setInterval(()=>{
     c--;
-    if(c===0){clearInterval(i);show(2);}
-    else el.textContent=c;
+    if(c===0){
+      clearInterval(i);
+      show(2);
+    }else el.textContent=c;
   },700);
 };
 
-/* drag logic */
+/* drag logic FIXED */
 let match=document.getElementById('match');
 let cake=document.getElementById('cake');
-let dragging=false,holdTimer=null;
+let dragging=false;
+let holdTimer=null;
 
-match.addEventListener('touchstart',()=>dragging=true);
+match.addEventListener('touchstart',e=>{
+  dragging=true;
+  e.preventDefault();
+},{passive:false});
+
 window.addEventListener('touchmove',e=>{
   if(!dragging) return;
-  match.style.left=e.touches[0].clientX-40+'px';
-  match.style.top=e.touches[0].clientY-40+'px';
+  e.preventDefault();
+
+  let x=e.touches[0].clientX;
+  let y=e.touches[0].clientY;
+  match.style.left=(x-40)+'px';
+  match.style.top=(y-40)+'px';
 
   let m=match.getBoundingClientRect();
   let c=cake.getBoundingClientRect();
 
-  if(m.top < c.top+40 && m.left > c.left+100 && m.right < c.right-100){
-    if(!holdTimer) holdTimer=setTimeout(ignite,1200);
+  if(
+    m.top < c.top+50 &&
+    m.left > c.left+80 &&
+    m.right < c.right-80
+  ){
+    if(!holdTimer){
+      holdTimer=setTimeout(ignite,1200);
+    }
   }else{
     clearTimeout(holdTimer);
     holdTimer=null;
   }
-});
+},{passive:false});
+
 window.addEventListener('touchend',()=>{
   dragging=false;
   clearTimeout(holdTimer);
@@ -279,7 +308,7 @@ window.addEventListener('touchend',()=>{
 
 function ignite(){
   let s2=document.getElementById('screen2');
-  for(let i=0;i<40;i++){
+  for(let i=0;i<35;i++){
     let s=document.createElement('div');
     s.className='spark';
     s.style.left='50%';
@@ -296,7 +325,7 @@ function ignite(){
 
 /* stars + fireflies */
 let s3=document.getElementById('screen3');
-for(let i=0;i<70;i++){
+for(let i=0;i<60;i++){
   let st=document.createElement('div');
   st.className='star';
   st.style.left=Math.random()*100+'vw';
