@@ -2,22 +2,23 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Birthday Surprise</title>
 
 <style>
 html,body{
   margin:0;
-  width:100vw;
-  height:100vh;
+  padding:0;
+  height:100%;
   overflow:hidden;
   font-family:Arial, sans-serif;
   background:black;
   touch-action:none;
 }
 
+/* COMMON */
 .screen{
-  position:fixed;
+  position:absolute;
   inset:0;
   display:none;
   justify-content:center;
@@ -28,83 +29,68 @@ html,body{
 
 /* ---------- SCREEN 0 ---------- */
 #screen0{
-  background:radial-gradient(#1b2b55,#000);
-  color:white;
-  text-align:center;
+  background:radial-gradient(#1a2a55,#000);
 }
 .swipeText{
-  font-size:28px;
-  animation:float 1.8s infinite;
+  font-size:26px;
+  opacity:.9;
+  animation:bounce 1.5s infinite;
 }
-@keyframes float{
-  50%{transform:translateY(-14px)}
+@keyframes bounce{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-10px)}
 }
 
 /* ---------- SCREEN 1 ---------- */
 #screen1{
-  background:#0c1625;
-  color:white;
+  background:radial-gradient(#182b4a,#000);
 }
 .envelopeText{
-  font-size:40px;
+  font-size:30px;
   color:gold;
-  margin-bottom:25px;
+  margin-bottom:20px;
 }
 .envelope{
-  width:260px;
-  height:170px;
+  width:240px;
+  height:150px;
   background:#f5f5f5;
-  border-radius:16px;
+  border-radius:12px;
   position:relative;
-  animation:pulse 1.5s infinite;
-}
-@keyframes pulse{
-  50%{transform:scale(1.03)}
 }
 .envelope:before{
   content:'';
   position:absolute;
   inset:0;
-  background:#ddd;
   clip-path:polygon(0 0,100% 0,50% 55%);
+  background:#ddd;
 }
-.count{
-  font-size:60px;
-  margin-top:25px;
+.countdown{
+  font-size:48px;
+  margin-top:20px;
 }
 
 /* ---------- SCREEN 2 (CAKE) ---------- */
 #screen2{
   background:#c40000;
-  color:white;
 }
 .hint{
-  font-size:22px;
-  margin-bottom:10px;
+  position:absolute;
+  top:6%;
+  font-size:26px;
+  color:white;
+  z-index:10;
+  width:100%;
+  text-align:center;
 }
 #cake{
-  position:absolute;
-  top:20%;
-  left:50%;
-  transform:translateX(-50%);
-  width:280px;
-}
-#candleHint{
-  position:absolute;
-  top:calc(20% + 20px);
-  left:50%;
-  width:150px;
-  height:70px;
-  transform:translateX(-50%);
-  border-radius:50%;
-  box-shadow:0 0 35px rgba(255,215,0,0.7);
-  pointer-events:none;
+  width:80%;
+  max-width:320px;
 }
 #matchstick{
-  position:absolute;
-  bottom:14%;
-  left:8%;
   width:160px;
+  position:absolute;
+  bottom:12%;
+  left:10%;
   touch-action:none;
 }
 .sparkle{
@@ -113,14 +99,11 @@ html,body{
   height:10px;
   background:gold;
   border-radius:50%;
-  pointer-events:none;
-  animation:burst 1.5s ease-out forwards;
+  animation:spark 1s linear forwards;
 }
-@keyframes burst{
-  to{
-    opacity:0;
-    transform:translate(var(--dx),var(--dy)) scale(0.2);
-  }
+@keyframes spark{
+  from{opacity:1;transform:scale(1)}
+  to{opacity:0;transform:translate(var(--x),var(--y)) scale(0)}
 }
 
 /* ---------- SCREEN 3 (SKY) ---------- */
@@ -130,64 +113,66 @@ html,body{
 }
 .moon{
   position:absolute;
-  top:40px;
+  top:60px;
   right:40px;
   width:120px;
   height:120px;
+  border-radius:50%;
   background:white;
-  border-radius:50%;
-}
-.moon:after{
-  content:'';
-  position:absolute;
-  left:-30px;
-  width:120px;
-  height:120px;
-  background:black;
-  border-radius:50%;
+  box-shadow:-35px 0 0 10px black;
 }
 .cloud{
   position:absolute;
   top:90px;
-  width:260px;
-  animation:cloudMove 30s linear infinite;
+  right:10px;
+  width:220px;
+  animation:cloudMove 20s linear infinite;
 }
 @keyframes cloudMove{
-  from{left:110%}
-  to{left:-300px}
+  from{transform:translateX(0)}
+  to{transform:translateX(-120px)}
 }
 .star{
   position:absolute;
-  width:5px;
-  height:5px;
+  width:6px;
+  height:6px;
   background:white;
-  animation:fall 7s linear infinite;
+  clip-path:polygon(
+    50% 0%,61% 38%,100% 50%,
+    61% 62%,50% 100%,39% 62%,
+    0% 50%,39% 38%
+  );
+  animation:fall 6s linear infinite;
 }
 @keyframes fall{
-  from{top:-20px}
-  to{top:120vh}
+  from{transform:translate(0,-100px)}
+  to{transform:translate(-400px,120vh)}
 }
 .firefly{
   position:absolute;
-  width:20px;
-  animation:fly 6s ease-in-out infinite;
+  width:22px;
+  filter:drop-shadow(0 0 8px yellow);
+  animation:fly 5s ease-in-out infinite;
 }
 @keyframes fly{
-  50%{transform:translate(40px,-40px)}
+  0%{opacity:.2}
+  50%{opacity:1}
+  100%{opacity:.2}
 }
 .birthdayText{
   position:absolute;
-  bottom:-250px;
+  bottom:-200px;
   text-align:center;
-  font-size:34px;
+  font-size:30px;
   font-weight:bold;
-  line-height:1.6;
   color:#00ff66;
   -webkit-text-stroke:1px white;
+  text-shadow:0 0 15px #00ff66;
   animation:textUp 3s forwards;
+  line-height:1.6;
 }
 @keyframes textUp{
-  to{bottom:40%}
+  to{bottom:35%}
 }
 
 /* ---------- SCREEN 4 ---------- */
@@ -196,17 +181,13 @@ html,body{
 }
 #temple{
   width:100%;
-  animation:zoom 18s ease-in-out infinite;
+  height:100%;
+  object-fit:contain;
+  animation:zoom 10s ease-in-out infinite;
 }
 @keyframes zoom{
+  0%,100%{transform:scale(1)}
   50%{transform:scale(1.05)}
-}
-.finalText{
-  margin-top:18px;
-  font-size:38px;
-  font-weight:bold;
-  color:white;
-  text-align:center;
 }
 
 audio{display:none}
@@ -219,31 +200,27 @@ audio{display:none}
 
 <!-- SCREEN 0 -->
 <div class="screen active" id="screen0">
-  <div class="swipeText">Swipe up to begin something magical ✨⬆️</div>
+  <div class="swipeText">Swipe up to explore something magical ✨⬆️</div>
 </div>
 
 <!-- SCREEN 1 -->
 <div class="screen" id="screen1">
   <div class="envelopeText">Something special is waiting…</div>
-  <div class="envelope" id="env"></div>
-  <div class="count" id="count"></div>
+  <div class="envelope"></div>
+  <div class="countdown" id="count"></div>
 </div>
 
 <!-- SCREEN 2 -->
 <div class="screen" id="screen2">
-  <div class="hint">Hold the matchstick on the candle 🔥</div>
+  <div class="hint">Hold & drag the matchstick to light the candle 🔥</div>
   <img id="cake" src="cake.png">
-  <div id="candleHint"></div>
   <img id="matchstick" src="matchstick.png">
 </div>
 
 <!-- SCREEN 3 -->
 <div class="screen" id="screen3">
   <div class="moon"></div>
-  <img src="cloud.png" class="cloud" style="top:90px">
-  <img src="cloud.png" class="cloud" style="top:140px;animation-delay:8s">
-  <img src="firefly.png" class="firefly" style="top:55%;left:20%">
-  <img src="firefly.png" class="firefly" style="top:60%;left:70%">
+  <img src="cloud.png" class="cloud">
   <div class="birthdayText">
     HAPPY BIRTHDAY<br>
     SWETA CHOUDHARY SINGH<br>
@@ -254,124 +231,103 @@ audio{display:none}
 <!-- SCREEN 4 -->
 <div class="screen" id="screen4">
   <img id="temple" src="temple_couple.jpg">
-  <div class="finalText">May your life always shine with love & blessings 🙏</div>
 </div>
 
 <script>
+let current=0;
 const screens=document.querySelectorAll('.screen');
 const music=document.getElementById('music');
-let current=0,startY=null;
-
 function show(n){
   screens.forEach(s=>s.classList.remove('active'));
   screens[n].classList.add('active');
   current=n;
 }
 
-/* Swipe only on first screen */
-window.addEventListener('touchstart',e=>{
-  if(current===0) startY=e.touches[0].clientY;
-},{passive:false});
+/* SWIPE UP */
+let startY=0;
+window.addEventListener('touchstart',e=>startY=e.touches[0].clientY);
 window.addEventListener('touchend',e=>{
-  if(current===0 && startY-e.changedTouches[0].clientY>80){
-    show(1);
-  }
-  startY=null;
-},{passive:false});
+  let endY=e.changedTouches[0].clientY;
+  if(current===0 && startY-endY>50) show(1);
+});
 
-/* Envelope countdown */
-document.getElementById('env').onclick=()=>{
+/* COUNTDOWN */
+document.querySelector('.envelope').onclick=()=>{
   let c=3;
   const el=document.getElementById('count');
   el.textContent=c;
-  const t=setInterval(()=>{
+  const i=setInterval(()=>{
     c--;
-    el.textContent=c;
     if(c===0){
-      clearInterval(t);
+      clearInterval(i);
       show(2);
-    }
-  },1000);
+    }else el.textContent=c;
+  },700);
 };
 
-/* DRAG LOGIC (FINAL, STABLE) */
-const match=document.getElementById('matchstick');
+/* DRAG MATCHSTICK */
+const stick=document.getElementById('matchstick');
 const cake=document.getElementById('cake');
-let dragging=false,offsetX=0,offsetY=0,lit=false,holdTimer=null;
+let dragging=false,offsetX=0,offsetY=0;
 
-match.addEventListener('touchstart',e=>{
+stick.addEventListener('touchstart',e=>{
   dragging=true;
-  const t=e.touches[0];
-  offsetX=t.clientX-match.offsetLeft;
-  offsetY=t.clientY-match.offsetTop;
-},{passive:false});
+  offsetX=e.touches[0].clientX-stick.offsetLeft;
+  offsetY=e.touches[0].clientY-stick.offsetTop;
+});
+window.addEventListener('touchmove',e=>{
+  if(!dragging) return;
+  stick.style.left=e.touches[0].clientX-offsetX+'px';
+  stick.style.top=e.touches[0].clientY-offsetY+'px';
 
-document.addEventListener('touchmove',e=>{
-  if(!dragging||lit) return;
-  e.preventDefault();
-  const t=e.touches[0];
-  const x=t.clientX-offsetX;
-  const y=t.clientY-offsetY;
-  match.style.left=x+'px';
-  match.style.top=y+'px';
-
-  const r=cake.getBoundingClientRect();
-  const zone={
-    left:r.left+r.width*0.25,
-    right:r.left+r.width*0.75,
-    top:r.top+5,
-    bottom:r.top+80
-  };
-  const tipX=x+match.offsetWidth;
-  const tipY=y+15;
-
-  const inside=tipX>zone.left&&tipX<zone.right&&tipY>zone.top&&tipY<zone.bottom;
-
-  if(inside&&!holdTimer){
-    holdTimer=setTimeout(()=>{
-      lit=true;
-      sparkleBurst(r);
-      music.play();
-      setTimeout(()=>show(3),3000);
-      setTimeout(()=>show(4),14000);
-    },350);
-  }
-  if(!inside&&holdTimer){
-    clearTimeout(holdTimer);
-    holdTimer=null;
-  }
-},{passive:false});
-
-document.addEventListener('touchend',()=>{
-  dragging=false;
-  if(holdTimer){
-    clearTimeout(holdTimer);
-    holdTimer=null;
+  const s=stick.getBoundingClientRect();
+  const c=cake.getBoundingClientRect();
+  if(s.right>c.left+120 && s.left<c.right-120 && s.top<c.top+80){
+    ignite();
   }
 });
+window.addEventListener('touchend',()=>dragging=false);
 
-function sparkleBurst(r){
-  for(let i=0;i<45;i++){
-    const s=document.createElement('div');
-    s.className='sparkle';
-    s.style.left=(r.left+r.width/2)+'px';
-    s.style.top=(r.top+40)+'px';
-    s.style.setProperty('--dx',(Math.random()*240-120)+'px');
-    s.style.setProperty('--dy',(-Math.random()*220)+'px');
-    document.body.appendChild(s);
-    setTimeout(()=>s.remove(),1500);
+function ignite(){
+  dragging=false;
+  burst();
+  music.play();
+  show(3);
+  setTimeout(()=>show(4),12000);
+}
+
+/* SPARKLE BURST */
+function burst(){
+  for(let i=0;i<40;i++){
+    const sp=document.createElement('div');
+    sp.className='sparkle';
+    sp.style.left='50%';
+    sp.style.top='45%';
+    sp.style.setProperty('--x',(Math.random()*300-150)+'px');
+    sp.style.setProperty('--y',(Math.random()*300-150)+'px');
+    document.body.appendChild(sp);
+    setTimeout(()=>sp.remove(),1000);
   }
 }
 
-/* Stars */
+/* STARS & FIREFLIES */
 for(let i=0;i<40;i++){
   const st=document.createElement('div');
   st.className='star';
   st.style.left=Math.random()*100+'vw';
-  st.style.animationDelay=Math.random()*6+'s';
+  st.style.animationDelay=Math.random()*5+'s';
   document.getElementById('screen3').appendChild(st);
+}
+for(let i=0;i<6;i++){
+  const f=document.createElement('img');
+  f.src='firefly.png';
+  f.className='firefly';
+  f.style.left=Math.random()*100+'vw';
+  f.style.top=Math.random()*100+'vh';
+  document.getElementById('screen3').appendChild(f);
 }
 </script>
 
 </body>
 </html>
+
