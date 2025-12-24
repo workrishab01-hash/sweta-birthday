@@ -8,12 +8,11 @@
 <style>
 html,body{
   margin:0;
-  padding:0;
   width:100vw;
   height:100vh;
   overflow:hidden;
-  background:black;
   font-family:Arial, sans-serif;
+  background:black;
   touch-action:none;
 }
 
@@ -31,13 +30,14 @@ html,body{
 #screen0{
   background:radial-gradient(#1b2b55,#000);
   color:white;
+  text-align:center;
 }
 .swipeText{
-  font-size:26px;
+  font-size:28px;
   animation:float 1.8s infinite;
 }
 @keyframes float{
-  50%{transform:translateY(-12px)}
+  50%{transform:translateY(-14px)}
 }
 
 /* ---------- SCREEN 1 ---------- */
@@ -46,7 +46,7 @@ html,body{
   color:white;
 }
 .envelopeText{
-  font-size:38px;
+  font-size:40px;
   color:gold;
   margin-bottom:25px;
 }
@@ -56,6 +56,10 @@ html,body{
   background:#f5f5f5;
   border-radius:16px;
   position:relative;
+  animation:pulse 1.5s infinite;
+}
+@keyframes pulse{
+  50%{transform:scale(1.03)}
 }
 .envelope:before{
   content:'';
@@ -72,23 +76,28 @@ html,body{
 /* ---------- SCREEN 2 (CAKE) ---------- */
 #screen2{
   background:#c40000;
+  color:white;
+}
+.hint{
+  font-size:22px;
+  margin-bottom:10px;
 }
 #cake{
   position:absolute;
-  top:18%;
+  top:20%;
   left:50%;
   transform:translateX(-50%);
   width:280px;
 }
 #candleHint{
   position:absolute;
-  top:calc(18% + 20px);
+  top:calc(20% + 20px);
   left:50%;
   width:150px;
   height:70px;
   transform:translateX(-50%);
   border-radius:50%;
-  box-shadow:0 0 35px rgba(255,215,0,0.6);
+  box-shadow:0 0 35px rgba(255,215,0,0.7);
   pointer-events:none;
 }
 #matchstick{
@@ -108,8 +117,10 @@ html,body{
   animation:burst 1.5s ease-out forwards;
 }
 @keyframes burst{
-  from{opacity:1;transform:scale(1)}
-  to{opacity:0;transform:translate(var(--dx),var(--dy)) scale(0.2)}
+  to{
+    opacity:0;
+    transform:translate(var(--dx),var(--dy)) scale(0.2);
+  }
 }
 
 /* ---------- SCREEN 3 (SKY) ---------- */
@@ -192,7 +203,7 @@ html,body{
 }
 .finalText{
   margin-top:18px;
-  font-size:36px;
+  font-size:38px;
   font-weight:bold;
   color:white;
   text-align:center;
@@ -220,6 +231,7 @@ audio{display:none}
 
 <!-- SCREEN 2 -->
 <div class="screen" id="screen2">
+  <div class="hint">Hold the matchstick on the candle 🔥</div>
   <img id="cake" src="cake.png">
   <div id="candleHint"></div>
   <img id="matchstick" src="matchstick.png">
@@ -256,7 +268,7 @@ function show(n){
   current=n;
 }
 
-/* swipe only on first screen */
+/* Swipe only on first screen */
 window.addEventListener('touchstart',e=>{
   if(current===0) startY=e.touches[0].clientY;
 },{passive:false});
@@ -267,7 +279,7 @@ window.addEventListener('touchend',e=>{
   startY=null;
 },{passive:false});
 
-/* envelope countdown */
+/* Envelope countdown */
 document.getElementById('env').onclick=()=>{
   let c=3;
   const el=document.getElementById('count');
@@ -282,7 +294,7 @@ document.getElementById('env').onclick=()=>{
   },1000);
 };
 
-/* DRAG LOGIC (PROVEN) */
+/* DRAG LOGIC (FINAL, STABLE) */
 const match=document.getElementById('matchstick');
 const cake=document.getElementById('cake');
 let dragging=false,offsetX=0,offsetY=0,lit=false,holdTimer=null;
@@ -351,7 +363,7 @@ function sparkleBurst(r){
   }
 }
 
-/* stars */
+/* Stars */
 for(let i=0;i<40;i++){
   const st=document.createElement('div');
   st.className='star';
