@@ -7,12 +7,10 @@
 
 <style>
 html,body{
-  margin:0;
-  padding:0;
-  height:100%;
+  margin:0;padding:0;height:100%;
   overflow:hidden;
-  font-family: Arial, sans-serif;
   background:#000;
+  font-family: 'Arial', sans-serif;
   color:#fff;
 }
 
@@ -24,41 +22,33 @@ html,body{
   align-items:center;
   flex-direction:column;
 }
+
 .screen.active{display:flex}
 
-/* ---------- SCREEN 0 ---------- */
+/* -------- SCREEN 0 -------- */
 #screen0{
-  background:radial-gradient(circle at top,#1b2a4a,#000);
+  background:radial-gradient(circle at top,#2b3d6e,#000);
+}
+.intro{
+  font-size:26px;
   text-align:center;
+  animation:fadePulse 2s infinite;
 }
-.swipe-text{
-  font-size:22px;
-  animation:pulse 1.5s infinite;
-}
-.arrow{
-  font-size:32px;
-  margin-top:15px;
-  animation:updown 1s infinite;
-}
-@keyframes pulse{
-  0%{opacity:.4}50%{opacity:1}100%{opacity:.4}
-}
-@keyframes updown{
-  0%{transform:translateY(0)}
-  50%{transform:translateY(-12px)}
-  100%{transform:translateY(0)}
+@keyframes fadePulse{
+  0%{opacity:.4}
+  50%{opacity:1}
+  100%{opacity:.4}
 }
 
-/* ---------- SCREEN 1 ---------- */
+/* -------- SCREEN 1 -------- */
 #screen1{
   background:radial-gradient(#0b1a2f,#000);
 }
 .envelope{
-  width:220px;height:140px;
-  background:#f5f5f5;
-  border-radius:12px;
+  width:230px;height:150px;
+  background:#f7f7f7;
+  border-radius:14px;
   position:relative;
-  cursor:pointer;
 }
 .envelope:before{
   content:'';
@@ -67,19 +57,20 @@ html,body{
   background:#ddd;
   clip-path:polygon(0 0,100% 0,50% 55%);
 }
-.countdown{
+.count{
   font-size:48px;
   margin-top:20px;
 }
 
-/* ---------- SCREEN 2 ---------- */
+/* -------- SCREEN 2 -------- */
 #screen2{
-  background:linear-gradient(135deg,#3b1d5a,#0d2b4f);
+  background:linear-gradient(135deg,#7b2cbf,#240046);
 }
 #cake{width:260px}
 #matchstick{
   width:160px;
   margin-top:40px;
+  position:relative;
   touch-action:none;
 }
 .sparkle{
@@ -87,89 +78,88 @@ html,body{
   width:6px;height:6px;
   background:gold;
   border-radius:50%;
-  animation:spark 1s linear infinite;
+  animation:spark 1.5s linear;
 }
 @keyframes spark{
   from{transform:translateY(0);opacity:1}
-  to{transform:translateY(-60px);opacity:0}
+  to{transform:translateY(-80px);opacity:0}
 }
 
-/* ---------- SCREEN 3 ---------- */
-#screen3{background:black;overflow:hidden}
+/* -------- SCREEN 3 -------- */
+#screen3{overflow:hidden}
 .star{
   position:absolute;
-  width:8px;height:8px;
+  width:7px;height:7px;
   background:white;
-  clip-path:polygon(50% 0%,61% 38%,100% 50%,61% 62%,50% 100%,39% 62%,0% 50%,39% 38%);
-  animation:shoot 9s linear infinite;
+  clip-path:polygon(
+    50% 0%,61% 38%,100% 50%,
+    61% 62%,50% 100%,39% 62%,
+    0% 50%,39% 38%
+  );
+  animation:shoot 8s linear infinite;
 }
 @keyframes shoot{
-  from{transform:translate(100px,-100px);opacity:1}
-  to{transform:translate(-600px,800px);opacity:0}
+  from{transform:translate(200px,-200px);opacity:1}
+  to{transform:translate(-800px,900px);opacity:0}
 }
+
 .moon{
   position:absolute;
   top:60px;right:40px;
   width:120px;height:120px;
   border-radius:50%;
   background:white;
-  box-shadow:-35px 0 0 12px black;
+  box-shadow:-35px 0 0 14px black;
 }
+
 .cloud{
   position:absolute;
-  top:90px;right:-50px;
-  width:260px;
-  opacity:.9;
-  animation:cloudMove 30s linear infinite;
+  top:100px;right:-200px;
+  width:280px;
+  animation:cloudMove 40s linear infinite;
 }
 @keyframes cloudMove{
-  from{transform:translateX(0)}
-  to{transform:translateX(-300px)}
+  to{transform:translateX(-500px)}
 }
+
 .firefly{
   position:absolute;
-  width:14px;
+  width:10px;height:10px;
   background:yellow;
   border-radius:50%;
   animation:fly 6s ease-in-out infinite;
 }
 @keyframes fly{
-  0%{opacity:.2;transform:translate(0,0)}
-  50%{opacity:1;transform:translate(40px,-30px)}
-  100%{opacity:.2;transform:translate(-20px,20px)}
+  50%{transform:translate(50px,-40px);opacity:1}
 }
+
 .birthday-text{
   position:absolute;
-  bottom:120px;
+  top:45%;
+  transform:translateY(-50%);
   text-align:center;
   font-size:30px;
   font-weight:bold;
   color:#00ff66;
-  text-shadow:0 0 25px #00ff66;
+  text-shadow:0 0 30px #00ff66;
 }
 
-/* ---------- SCREEN 4 ---------- */
-#screen4{
-  background:black;
-}
+/* -------- SCREEN 4 -------- */
 #temple{
   width:100%;
   max-height:100%;
   object-fit:contain;
-  animation:floatZoom 8s ease-in-out infinite;
+  animation:float 8s ease-in-out infinite;
 }
-@keyframes floatZoom{
-  0%{transform:scale(1) translateY(0)}
+@keyframes float{
   50%{transform:scale(1.05) translateY(-10px)}
-  100%{transform:scale(1) translateY(0)}
 }
 .replay{
-  margin-top:12px;
+  margin-top:15px;
   padding:10px 24px;
   background:#00ff66;
-  color:black;
+  color:#000;
   border-radius:20px;
-  cursor:pointer;
 }
 
 audio{display:none}
@@ -181,14 +171,13 @@ audio{display:none}
 <audio id="music" src="birthday.webm" loop></audio>
 
 <div class="screen active" id="screen0">
-  <div class="swipe-text">Swipe up to explore something magical ✨</div>
-  <div class="arrow">⬆️</div>
+  <div class="intro">Swipe up to begin a beautiful surprise ✨</div>
 </div>
 
 <div class="screen" id="screen1">
   <div>Something special is waiting…</div>
-  <div class="envelope" onclick="startCountdown()"></div>
-  <div class="countdown" id="count"></div>
+  <div class="envelope" id="env"></div>
+  <div class="count" id="count"></div>
 </div>
 
 <div class="screen" id="screen2">
@@ -208,13 +197,13 @@ audio{display:none}
 
 <div class="screen" id="screen4">
   <img id="temple" src="temple_couple.jpg">
-  <div class="replay" onclick="replay()">Replay</div>
+  <div class="replay" onclick="resetAll()">Replay</div>
 </div>
 
 <script>
 const screens=document.querySelectorAll('.screen');
 const music=document.getElementById('music');
-let current=0;
+let current=0, timer;
 
 function show(n){
   screens.forEach(s=>s.classList.remove('active'));
@@ -226,40 +215,40 @@ window.addEventListener('touchstart',()=>{
   if(current===0) show(1);
 });
 
-function startCountdown(){
+document.getElementById('env').onclick=()=>{
   let c=3;
   const el=document.getElementById('count');
   el.textContent=c;
-  const t=setInterval(()=>{
+  clearInterval(timer);
+  timer=setInterval(()=>{
     c--;
     if(c===0){
-      clearInterval(t);
+      clearInterval(timer);
+      el.textContent='';
       show(2);
-    }else el.textContent=c;
+    } else el.textContent=c;
   },800);
-}
+};
 
-/* DRAG MATCHSTICK */
 const stick=document.getElementById('matchstick');
 stick.addEventListener('touchmove',e=>{
   const t=e.touches[0];
   stick.style.position='absolute';
   stick.style.left=t.clientX-80+'px';
   stick.style.top=t.clientY-20+'px';
-  if(t.clientY<300){
-    lightCake();
-  }
+  if(t.clientY<300) lightCake();
 });
 
 function lightCake(){
+  if(current!==2) return;
   music.play();
-  for(let i=0;i<15;i++){
+  for(let i=0;i<20;i++){
     const s=document.createElement('div');
     s.className='sparkle';
     s.style.left='50%';
-    s.style.bottom='200px';
-    document.body.appendChild(s);
-    setTimeout(()=>s.remove(),1000);
+    s.style.bottom='240px';
+    document.getElementById('screen2').appendChild(s);
+    setTimeout(()=>s.remove(),1500);
   }
   show(3);
   createStars();
@@ -267,18 +256,28 @@ function lightCake(){
 }
 
 function createStars(){
-  for(let i=0;i<40;i++){
+  const sky=document.getElementById('screen3');
+  sky.querySelectorAll('.star,.firefly').forEach(e=>e.remove());
+  for(let i=0;i<35;i++){
     const st=document.createElement('div');
     st.className='star';
     st.style.left=Math.random()*window.innerWidth+'px';
-    st.style.animationDelay=Math.random()*6+'s';
-    document.getElementById('screen3').appendChild(st);
+    sky.appendChild(st);
+  }
+  for(let i=0;i<8;i++){
+    const f=document.createElement('div');
+    f.className='firefly';
+    f.style.left=Math.random()*window.innerWidth+'px';
+    f.style.top=300+Math.random()*300+'px';
+    sky.appendChild(f);
   }
 }
 
-function replay(){
-  music.pause();
-  music.currentTime=0;
+function resetAll(){
+  clearInterval(timer);
+  music.pause(); music.currentTime=0;
+  document.getElementById('count').textContent='';
+  stick.style.position='relative';
   show(0);
 }
 </script>
