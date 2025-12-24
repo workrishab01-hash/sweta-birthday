@@ -6,186 +6,173 @@
 <title>Birthday Surprise</title>
 
 <style>
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  overflow: hidden;
-  font-family: 'Arial', sans-serif;
-  background: black;
-  color: white;
+html,body{
+  margin:0;
+  padding:0;
+  height:100%;
+  overflow:hidden;
+  font-family: Arial, sans-serif;
+  background:#000;
+  color:#fff;
 }
 
-.screen {
-  position: absolute;
-  inset: 0;
-  display: none;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+.screen{
+  position:absolute;
+  inset:0;
+  display:none;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
 }
-
-.screen.active {
-  display: flex;
-}
+.screen.active{display:flex}
 
 /* ---------- SCREEN 0 ---------- */
-#screen0 {
-  background: radial-gradient(#0a1633, #000);
-  text-align: center;
+#screen0{
+  background:radial-gradient(circle at top,#1b2a4a,#000);
+  text-align:center;
+}
+.swipe-text{
+  font-size:22px;
+  animation:pulse 1.5s infinite;
+}
+.arrow{
+  font-size:32px;
+  margin-top:15px;
+  animation:updown 1s infinite;
+}
+@keyframes pulse{
+  0%{opacity:.4}50%{opacity:1}100%{opacity:.4}
+}
+@keyframes updown{
+  0%{transform:translateY(0)}
+  50%{transform:translateY(-12px)}
+  100%{transform:translateY(0)}
 }
 
-.rotate-text {
-  font-size: 22px;
-  opacity: 0.9;
-  animation: pulse 1.5s infinite;
+/* ---------- SCREEN 1 ---------- */
+#screen1{
+  background:radial-gradient(#0b1a2f,#000);
+}
+.envelope{
+  width:220px;height:140px;
+  background:#f5f5f5;
+  border-radius:12px;
+  position:relative;
+  cursor:pointer;
+}
+.envelope:before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:#ddd;
+  clip-path:polygon(0 0,100% 0,50% 55%);
+}
+.countdown{
+  font-size:48px;
+  margin-top:20px;
 }
 
-@keyframes pulse {
-  0% {opacity: .4;}
-  50% {opacity: 1;}
-  100% {opacity: .4;}
+/* ---------- SCREEN 2 ---------- */
+#screen2{
+  background:linear-gradient(135deg,#3b1d5a,#0d2b4f);
+}
+#cake{width:260px}
+#matchstick{
+  width:160px;
+  margin-top:40px;
+  touch-action:none;
+}
+.sparkle{
+  position:absolute;
+  width:6px;height:6px;
+  background:gold;
+  border-radius:50%;
+  animation:spark 1s linear infinite;
+}
+@keyframes spark{
+  from{transform:translateY(0);opacity:1}
+  to{transform:translateY(-60px);opacity:0}
 }
 
-/* ---------- SCREEN 1 (Envelope) ---------- */
-#screen1 {
-  background: radial-gradient(#0b1a2f, #000);
+/* ---------- SCREEN 3 ---------- */
+#screen3{background:black;overflow:hidden}
+.star{
+  position:absolute;
+  width:8px;height:8px;
+  background:white;
+  clip-path:polygon(50% 0%,61% 38%,100% 50%,61% 62%,50% 100%,39% 62%,0% 50%,39% 38%);
+  animation:shoot 9s linear infinite;
+}
+@keyframes shoot{
+  from{transform:translate(100px,-100px);opacity:1}
+  to{transform:translate(-600px,800px);opacity:0}
+}
+.moon{
+  position:absolute;
+  top:60px;right:40px;
+  width:120px;height:120px;
+  border-radius:50%;
+  background:white;
+  box-shadow:-35px 0 0 12px black;
+}
+.cloud{
+  position:absolute;
+  top:90px;right:-50px;
+  width:260px;
+  opacity:.9;
+  animation:cloudMove 30s linear infinite;
+}
+@keyframes cloudMove{
+  from{transform:translateX(0)}
+  to{transform:translateX(-300px)}
+}
+.firefly{
+  position:absolute;
+  width:14px;
+  background:yellow;
+  border-radius:50%;
+  animation:fly 6s ease-in-out infinite;
+}
+@keyframes fly{
+  0%{opacity:.2;transform:translate(0,0)}
+  50%{opacity:1;transform:translate(40px,-30px)}
+  100%{opacity:.2;transform:translate(-20px,20px)}
+}
+.birthday-text{
+  position:absolute;
+  bottom:120px;
+  text-align:center;
+  font-size:30px;
+  font-weight:bold;
+  color:#00ff66;
+  text-shadow:0 0 25px #00ff66;
 }
 
-.envelope {
-  width: 220px;
-  height: 140px;
-  background: #f5f5f5;
-  border-radius: 10px;
-  position: relative;
-  cursor: pointer;
+/* ---------- SCREEN 4 ---------- */
+#screen4{
+  background:black;
+}
+#temple{
+  width:100%;
+  max-height:100%;
+  object-fit:contain;
+  animation:floatZoom 8s ease-in-out infinite;
+}
+@keyframes floatZoom{
+  0%{transform:scale(1) translateY(0)}
+  50%{transform:scale(1.05) translateY(-10px)}
+  100%{transform:scale(1) translateY(0)}
+}
+.replay{
+  margin-top:12px;
+  padding:10px 24px;
+  background:#00ff66;
+  color:black;
+  border-radius:20px;
+  cursor:pointer;
 }
 
-.envelope:before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  clip-path: polygon(0 0,100% 0,50% 55%);
-  background: #ddd;
-}
-
-.envelope-text {
-  margin-bottom: 20px;
-  font-size: 20px;
-  opacity: 0.9;
-}
-
-/* ---------- SCREEN 2 (Cake) ---------- */
-#screen2 {
-  background: #000;
-}
-
-#cake {
-  width: 260px;
-}
-
-#matchstick {
-  width: 160px;
-  margin-top: 40px;
-  cursor: grab;
-}
-
-/* ---------- SCREEN 3 (Sky) ---------- */
-#screen3 {
-  background: black;
-  overflow: hidden;
-}
-
-.star {
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  background: white;
-  clip-path: polygon(
-    50% 0%, 61% 38%, 100% 50%,
-    61% 62%, 50% 100%, 39% 62%,
-    0% 50%, 39% 38%
-  );
-  animation: fall 8s linear infinite;
-}
-
-@keyframes fall {
-  from { transform: translate(0, -100px); opacity: 1; }
-  to   { transform: translate(-400px, 900px); opacity: 0; }
-}
-
-.moon {
-  position: absolute;
-  top: 60px;
-  right: 40px;
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  background: white;
-  box-shadow: -30px 0 0 10px black;
-}
-
-.cloud {
-  position: absolute;
-  top: 90px;
-  right: 10px;
-  width: 220px;
-  opacity: 0.9;
-  animation: cloudMove 20s linear infinite;
-}
-
-@keyframes cloudMove {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-120px); }
-}
-
-.firefly {
-  position: absolute;
-  width: 18px;
-  animation: fly 6s ease-in-out infinite;
-}
-
-@keyframes fly {
-  0% { transform: translate(0,0); opacity: .2;}
-  50% { transform: translate(40px,-30px); opacity: 1;}
-  100% { transform: translate(-20px,20px); opacity: .2;}
-}
-
-.birthday-text {
-  position: absolute;
-  bottom: 120px;
-  text-align: center;
-  font-size: 28px;
-  font-weight: bold;
-  color: #00ff66;
-  text-shadow: 0 0 15px #00ff66;
-  line-height: 1.4;
-}
-
-/* ---------- SCREEN 4 (Temple) ---------- */
-#screen4 {
-  background: black;
-}
-
-#temple {
-  width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-
-.replay {
-  margin-top: 10px;
-  padding: 10px 20px;
-  background: #00ff66;
-  color: black;
-  border-radius: 20px;
-  cursor: pointer;
-}
-
-/* ---------- AUDIO ---------- */
-audio {
-  display: none;
-}
+audio{display:none}
 </style>
 </head>
 
@@ -193,31 +180,25 @@ audio {
 
 <audio id="music" src="birthday.webm" loop></audio>
 
-<!-- Screen 0 -->
 <div class="screen active" id="screen0">
-  <div class="rotate-text">Rotate or Swipe Up to Explore Something Special ✨</div>
+  <div class="swipe-text">Swipe up to explore something magical ✨</div>
+  <div class="arrow">⬆️</div>
 </div>
 
-<!-- Screen 1 -->
 <div class="screen" id="screen1">
-  <div class="envelope-text">Something special is waiting…</div>
-  <div class="envelope" onclick="openEnvelope()"></div>
+  <div>Something special is waiting…</div>
+  <div class="envelope" onclick="startCountdown()"></div>
+  <div class="countdown" id="count"></div>
 </div>
 
-<!-- Screen 2 -->
 <div class="screen" id="screen2">
   <img id="cake" src="cake.png">
-  <img id="matchstick" src="matchstick.png" onclick="lightCake()">
+  <img id="matchstick" src="matchstick.png">
 </div>
 
-<!-- Screen 3 -->
 <div class="screen" id="screen3">
   <div class="moon"></div>
   <img src="cloud.png" class="cloud">
-
-  <img src="firefly.png" class="firefly" style="top:40%;left:20%">
-  <img src="firefly.png" class="firefly" style="top:60%;left:60%">
-
   <div class="birthday-text">
     HAPPY BIRTHDAY<br>
     SWETA CHOUDHARY SINGH<br>
@@ -225,41 +206,81 @@ audio {
   </div>
 </div>
 
-<!-- Screen 4 -->
 <div class="screen" id="screen4">
   <img id="temple" src="temple_couple.jpg">
   <div class="replay" onclick="replay()">Replay</div>
 </div>
 
 <script>
-let current = 0;
-const screens = document.querySelectorAll('.screen');
-const music = document.getElementById('music');
+const screens=document.querySelectorAll('.screen');
+const music=document.getElementById('music');
+let current=0;
 
-function show(n) {
-  screens.forEach(s => s.classList.remove('active'));
+function show(n){
+  screens.forEach(s=>s.classList.remove('active'));
   screens[n].classList.add('active');
-  current = n;
+  current=n;
 }
 
-function openEnvelope() {
-  show(2);
+window.addEventListener('touchstart',()=>{
+  if(current===0) show(1);
+});
+
+function startCountdown(){
+  let c=3;
+  const el=document.getElementById('count');
+  el.textContent=c;
+  const t=setInterval(()=>{
+    c--;
+    if(c===0){
+      clearInterval(t);
+      show(2);
+    }else el.textContent=c;
+  },800);
 }
 
-function lightCake() {
+/* DRAG MATCHSTICK */
+const stick=document.getElementById('matchstick');
+stick.addEventListener('touchmove',e=>{
+  const t=e.touches[0];
+  stick.style.position='absolute';
+  stick.style.left=t.clientX-80+'px';
+  stick.style.top=t.clientY-20+'px';
+  if(t.clientY<300){
+    lightCake();
+  }
+});
+
+function lightCake(){
   music.play();
+  for(let i=0;i<15;i++){
+    const s=document.createElement('div');
+    s.className='sparkle';
+    s.style.left='50%';
+    s.style.bottom='200px';
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),1000);
+  }
   show(3);
-  setTimeout(() => show(4), 12000);
+  createStars();
+  setTimeout(()=>show(4),12000);
 }
 
-function replay() {
-  music.currentTime = 0;
+function createStars(){
+  for(let i=0;i<40;i++){
+    const st=document.createElement('div');
+    st.className='star';
+    st.style.left=Math.random()*window.innerWidth+'px';
+    st.style.animationDelay=Math.random()*6+'s';
+    document.getElementById('screen3').appendChild(st);
+  }
+}
+
+function replay(){
+  music.pause();
+  music.currentTime=0;
   show(0);
 }
-
-window.addEventListener('touchstart', () => {
-  if (current === 0) show(1);
-});
 </script>
 
 </body>
