@@ -1,333 +1,118 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Birthday Surprise</title>
+<title>Drag Test</title>
 
 <style>
-html,body{
-  margin:0;
-  width:100%;
-  height:100%;
-  overflow:hidden;
-  font-family:Arial,sans-serif;
-  background:black;
-  touch-action:none;
-}
-.screen{
-  position:absolute;
-  inset:0;
-  display:none;
-  justify-content:center;
-  align-items:center;
-  flex-direction:column;
-}
-.screen.active{display:flex}
-
-/* ---------- SCREEN 0 ---------- */
-#screen0{
-  background:radial-gradient(#1b2b55,#000);
-  color:white;
-}
-.swipeText{
-  font-size:26px;
-  animation:float 1.8s infinite;
-}
-@keyframes float{
-  50%{transform:translateY(-12px)}
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  touch-action: none;
+  background: red;
 }
 
-/* ---------- SCREEN 1 ---------- */
-#screen1{
-  background:#0c1625;
-  color:white;
-}
-.envelopeText{
-  font-size:36px;
-  color:gold;
-  margin-bottom:25px;
-}
-.envelope{
-  width:240px;
-  height:150px;
-  background:#f5f5f5;
-  border-radius:14px;
-  position:relative;
-}
-.envelope:before{
-  content:'';
-  position:absolute;
-  inset:0;
-  background:#ddd;
-  clip-path:polygon(0 0,100% 0,50% 55%);
-}
-.count{
-  font-size:54px;
-  margin-top:25px;
+#container {
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
-/* ---------- SCREEN 2 ---------- */
-#screen2{
-  background:#c40000;
-  position:relative;
-}
-#cake{
-  width:260px;
-  z-index:2;
-}
-#matchWrap{
-  position:absolute;
-  left:20px;
-  bottom:80px;
-  width:160px;
-  z-index:3;
-}
-#matchWrap img{width:100%}
-
-/* sparkles */
-.sparkle{
-  position:absolute;
-  width:8px;
-  height:8px;
-  background:gold;
-  border-radius:50%;
-  animation:spark 1s ease-out forwards;
-}
-@keyframes spark{
-  to{transform:translateY(-90px);opacity:0}
+#cake {
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 260px;
 }
 
-/* ---------- SCREEN 3 ---------- */
-#screen3{
-  background:black;
-  overflow:hidden;
+#matchstick {
+  position: absolute;
+  bottom: 15%;
+  left: 10%;
+  width: 150px;
+  touch-action: none;
 }
 
-/* moon */
-.moon{
-  position:absolute;
-  top:40px;
-  right:40px;
-  width:120px;
-  height:120px;
-  background:white;
-  border-radius:50%;
-}
-.moon:after{
-  content:'';
-  position:absolute;
-  left:-25px;
-  width:120px;
-  height:120px;
-  background:black;
-  border-radius:50%;
+.sparkle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: gold;
+  border-radius: 50%;
+  animation: sparkle 1s infinite;
 }
 
-/* clouds */
-.cloud{
-  position:absolute;
-  top:80px;
-  width:220px;
-  animation:cloudMove 25s linear infinite;
-}
-@keyframes cloudMove{
-  from{left:110%}
-  to{left:-240px}
-}
-
-/* shooting stars */
-.star{
-  position:absolute;
-  width:4px;
-  height:4px;
-  background:white;
-  animation:fall 6s linear infinite;
-}
-@keyframes fall{
-  from{top:-20px}
-  to{top:110vh}
-}
-
-/* fireflies */
-.firefly{
-  position:absolute;
-  width:18px;
-  animation:fly 6s ease-in-out infinite;
-}
-@keyframes fly{
-  50%{transform:translate(30px,-40px)}
-}
-
-/* birthday text */
-.birthdayText{
-  position:absolute;
-  bottom:-200px;
-  text-align:center;
-  font-size:32px;
-  font-weight:bold;
-  color:#00ff66;
-  -webkit-text-stroke:1px white;
-  line-height:1.6;
-  animation:textUp 3s forwards;
-}
-@keyframes textUp{
-  to{bottom:38%}
-}
-
-/* ---------- SCREEN 4 ---------- */
-#screen4{
-  background:black;
-}
-#temple{
-  width:100%;
-}
-.finalText{
-  font-size:34px;
-  font-weight:bold;
-  color:white;
-  margin-top:15px;
+@keyframes sparkle {
+  0% { transform: scale(0.3); opacity: 0.3; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(0.3); opacity: 0.3; }
 }
 </style>
 </head>
 
 <body>
 
-<audio id="music" src="birthday.webm"></audio>
-
-<!-- SCREEN 0 -->
-<div class="screen active" id="screen0">
-  <div class="swipeText">Swipe up to begin ✨⬆️</div>
-</div>
-
-<!-- SCREEN 1 -->
-<div class="screen" id="screen1">
-  <div class="envelopeText">Something special is waiting…</div>
-  <div class="envelope" id="env"></div>
-  <div class="count" id="count"></div>
-</div>
-
-<!-- SCREEN 2 -->
-<div class="screen" id="screen2">
+<div id="container">
   <img id="cake" src="cake.png">
-  <div id="matchWrap">
-    <img src="matchstick.png">
-  </div>
-</div>
-
-<!-- SCREEN 3 -->
-<div class="screen" id="screen3">
-  <div class="moon"></div>
-  <img src="cloud.png" class="cloud" style="top:90px">
-  <img src="cloud.png" class="cloud" style="top:140px;animation-delay:6s">
-
-  <img src="firefly.png" class="firefly" style="top:60%;left:20%">
-  <img src="firefly.png" class="firefly" style="top:50%;left:70%">
-
-  <div class="birthdayText">
-    HAPPY BIRTHDAY<br>
-    SWETA CHOUDHARY SINGH<br>
-    STAY HAPPY & BLESSED
-  </div>
-</div>
-
-<!-- SCREEN 4 -->
-<div class="screen" id="screen4">
-  <img id="temple" src="temple_couple.jpg">
-  <div class="finalText">May God bless you always 🙏</div>
+  <img id="matchstick" src="matchstick.png">
 </div>
 
 <script>
-const screens=document.querySelectorAll('.screen');
-const music=document.getElementById('music');
-let current=0;
+const match = document.getElementById("matchstick");
+const cake = document.getElementById("cake");
+let dragging = false;
+let offsetX = 0;
+let offsetY = 0;
+let lit = false;
 
-function show(n){
-  screens.forEach(s=>s.classList.remove('active'));
-  screens[n].classList.add('active');
-  current=n;
+match.addEventListener("touchstart", e => {
+  dragging = true;
+  const touch = e.touches[0];
+  offsetX = touch.clientX - match.offsetLeft;
+  offsetY = touch.clientY - match.offsetTop;
+});
+
+document.addEventListener("touchmove", e => {
+  if (!dragging) return;
+  e.preventDefault();
+
+  const touch = e.touches[0];
+  match.style.left = (touch.clientX - offsetX) + "px";
+  match.style.top = (touch.clientY - offsetY) + "px";
+
+  if (!lit && isTouching(match, cake)) {
+    lit = true;
+    showSparkles();
+  }
+}, { passive: false });
+
+document.addEventListener("touchend", () => {
+  dragging = false;
+});
+
+function isTouching(a, b) {
+  const r1 = a.getBoundingClientRect();
+  const r2 = b.getBoundingClientRect();
+  return !(
+    r1.right < r2.left ||
+    r1.left > r2.right ||
+    r1.bottom < r2.top ||
+    r1.top > r2.bottom
+  );
 }
 
-/* swipe only on first screen */
-let startY=null;
-window.addEventListener('touchstart',e=>{
-  if(current===0) startY=e.touches[0].clientY;
-},{passive:false});
-window.addEventListener('touchend',e=>{
-  if(current===0 && startY-e.changedTouches[0].clientY>80){
-    show(1);
+function showSparkles() {
+  for (let i = 0; i < 15; i++) {
+    const s = document.createElement("div");
+    s.className = "sparkle";
+    s.style.left = (cake.offsetLeft + 100 + Math.random()*60) + "px";
+    s.style.top = (cake.offsetTop + 40 + Math.random()*40) + "px";
+    document.body.appendChild(s);
   }
-  startY=null;
-},{passive:false});
-
-/* envelope countdown */
-document.getElementById('env').onclick=()=>{
-  let c=3;
-  const el=document.getElementById('count');
-  el.textContent=c;
-  const t=setInterval(()=>{
-    c--;
-    el.textContent=c;
-    if(c===0){
-      clearInterval(t);
-      show(2);
-    }
-  },1000);
-};
-
-/* DRAG MATCHSTICK – STRICT TIP COLLISION */
-const wrap=document.getElementById('matchWrap');
-let drag=false;
-
-wrap.addEventListener('touchstart',e=>{
-  drag=true;
-  e.preventDefault();
-},{passive:false});
-
-wrap.addEventListener('touchmove',e=>{
-  if(!drag) return;
-  const t=e.touches[0];
-  wrap.style.left=(t.clientX-80)+'px';
-  wrap.style.top=(t.clientY-20)+'px';
-
-  const cake=document.getElementById('cake').getBoundingClientRect();
-  const tipX=t.clientX;
-  const tipY=t.clientY;
-
-  /* ONLY candle top zone */
-  if(
-    tipX>cake.left+90 &&
-    tipX<cake.right-90 &&
-    tipY>cake.top+10 &&
-    tipY<cake.top+60
-  ){
-    drag=false;
-    music.play();
-
-    for(let i=0;i<30;i++){
-      const s=document.createElement('div');
-      s.className='sparkle';
-      s.style.left=(tipX)+'px';
-      s.style.top=(tipY)+'px';
-      document.body.appendChild(s);
-      setTimeout(()=>s.remove(),1000);
-    }
-
-    setTimeout(()=>show(3),3000);
-    setTimeout(()=>show(4),12000);
-  }
-  e.preventDefault();
-},{passive:false});
-
-wrap.addEventListener('touchend',()=>drag=false);
-
-/* shooting stars generator */
-for(let i=0;i<40;i++){
-  const s=document.createElement('div');
-  s.className='star';
-  s.style.left=Math.random()*100+'vw';
-  s.style.animationDelay=Math.random()*6+'s';
-  document.getElementById('screen3').appendChild(s);
 }
 </script>
 
