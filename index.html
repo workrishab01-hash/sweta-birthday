@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Drag Test Fixed</title>
+<title>Drag Test Final</title>
 
 <style>
 html, body {
   margin: 0;
   padding: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
   background: #c40000;
   touch-action: none;
@@ -22,35 +22,54 @@ html, body {
   background: #c40000;
 }
 
+/* Cake */
 #cake {
   position: absolute;
-  top: 20%;
+  top: 18%;
   left: 50%;
   transform: translateX(-50%);
-  width: 260px;
+  width: 280px;
 }
 
+/* Soft glow hint on candle area */
+#candleHint {
+  position: absolute;
+  top: calc(18% + 20px);
+  left: 50%;
+  width: 140px;
+  height: 60px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  box-shadow: 0 0 30px rgba(255,215,0,0.5);
+  pointer-events: none;
+}
+
+/* Matchstick */
 #matchstick {
   position: absolute;
-  bottom: 15%;
-  left: 10%;
-  width: 150px;
+  bottom: 14%;
+  left: 8%;
+  width: 160px;
   touch-action: none;
 }
 
+/* Sparkles */
 .sparkle {
   position: absolute;
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   background: gold;
   border-radius: 50%;
   pointer-events: none;
-  animation: burst 1.2s ease-out forwards;
+  animation: burst 1.5s ease-out forwards;
 }
 
 @keyframes burst {
   from { transform: scale(1); opacity: 1; }
-  to { transform: translate(var(--dx), var(--dy)) scale(0.2); opacity: 0; }
+  to {
+    transform: translate(var(--dx), var(--dy)) scale(0.2);
+    opacity: 0;
+  }
 }
 </style>
 </head>
@@ -59,6 +78,7 @@ html, body {
 
 <div id="container">
   <img id="cake" src="cake.png">
+  <div id="candleHint"></div>
   <img id="matchstick" src="matchstick.png">
 </div>
 
@@ -71,6 +91,7 @@ let dragging = false;
 let offsetX = 0;
 let offsetY = 0;
 let lit = false;
+let holdTimer = null;
 
 match.addEventListener("touchstart", e => {
   dragging = true;
@@ -90,36 +111,49 @@ document.addEventListener("touchmove", e => {
   match.style.left = x + "px";
   match.style.top = y + "px";
 
-  // Detect ONLY candle top zone
   const cakeRect = cake.getBoundingClientRect();
-  const tipX = x + match.offsetWidth;   // matchstick head
-  const tipY = y + 10;
 
-  const candleZone = {
-    left: cakeRect.left + cakeRect.width * 0.35,
-    right: cakeRect.left + cakeRect.width * 0.65,
-    top: cakeRect.top + 10,
-    bottom: cakeRect.top + 60
+  // Bigger, user-friendly candle zone
+  const zone = {
+    left: cakeRect.left + cakeRect.width * 0.25,
+    right: cakeRect.left + cakeRect.width * 0.75,
+    top: cakeRect.top + 5,
+    bottom: cakeRect.top + 80
   };
 
-  if (
-    tipX > candleZone.left &&
-    tipX < candleZone.right &&
-    tipY > candleZone.top &&
-    tipY < candleZone.bottom
-  ) {
-    lit = true;
-    sparkleBurst(cakeRect);
+  const tipX = x + match.offsetWidth;
+  const tipY = y + 15;
+
+  const inside =
+    tipX > zone.left &&
+    tipX < zone.right &&
+    tipY > zone.top &&
+    tipY < zone.bottom;
+
+  if (inside && !holdTimer) {
+    holdTimer = setTimeout(() => {
+      lit = true;
+      sparkleBurst(cakeRect);
+    }, 350); // short intentional hold
+  }
+
+  if (!inside && holdTimer) {
+    clearTimeout(holdTimer);
+    holdTimer = null;
   }
 
 }, { passive: false });
 
 document.addEventListener("touchend", () => {
   dragging = false;
+  if (holdTimer) {
+    clearTimeout(holdTimer);
+    holdTimer = null;
+  }
 });
 
 function sparkleBurst(cakeRect) {
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < 45; i++) {
     const s = document.createElement("div");
     s.className = "sparkle";
 
@@ -129,11 +163,11 @@ function sparkleBurst(cakeRect) {
     s.style.left = cx + "px";
     s.style.top = cy + "px";
 
-    s.style.setProperty("--dx", (Math.random() * 160 - 80) + "px");
-    s.style.setProperty("--dy", (-Math.random() * 160) + "px");
+    s.style.setProperty("--dx", (Math.random() * 240 - 120) + "px");
+    s.style.setProperty("--dy", (-Math.random() * 220) + "px");
 
     container.appendChild(s);
-    setTimeout(() => s.remove(), 1200);
+    setTimeout(() => s.remove(), 1500);
   }
 }
 </script>
