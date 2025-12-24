@@ -56,7 +56,7 @@ html,body{
   text-shadow:0 0 15px white;
 }
 
-/* ---------- SCREEN 2 ---------- */
+/* ---------- SCREEN 2 (CAKE) ---------- */
 #screen2{
   background:#c40000;
 }
@@ -76,27 +76,32 @@ html,body{
   left:30px;
   touch-action:none;
 }
+
+/* sparkles ONLY for cake screen */
 .spark{
   position:absolute;
   width:10px;
   height:10px;
   background:gold;
   border-radius:50%;
-  box-shadow:0 0 10px gold;
+  box-shadow:0 0 15px gold;
   animation:spark 1s linear forwards;
 }
 @keyframes spark{
-  to{opacity:0;transform:translate(var(--x),var(--y))}
+  to{
+    opacity:0;
+    transform:translate(var(--x),var(--y)) scale(0.3);
+  }
 }
 
-/* ---------- SCREEN 3 ---------- */
+/* ---------- SCREEN 3 (SHOOTING STAR) ---------- */
 #screen3{
   background:black;
   overflow:hidden;
 }
 .moon{
   position:absolute;
-  top:60px;
+  top:50px;
   right:40px;
   width:120px;
   height:120px;
@@ -104,46 +109,70 @@ html,body{
   background:white;
   box-shadow:-35px 0 0 black;
 }
+.cloud{
+  position:absolute;
+  top:120px;
+  width:220px;
+  opacity:0.9;
+}
+
+/* shooting stars */
 .star{
   position:absolute;
-  width:5px;
-  height:5px;
+  width:6px;
+  height:6px;
   background:white;
-  animation:fall 6s linear infinite;
+  box-shadow:0 0 10px white;
+  animation:shoot 6s linear infinite;
 }
-@keyframes fall{
-  to{transform:translate(-400px,120vh)}
+@keyframes shoot{
+  from{
+    transform:translate(0,-120px);
+    opacity:1;
+  }
+  to{
+    transform:translate(-500px,120vh);
+    opacity:0;
+  }
 }
+
+/* fireflies */
 .firefly{
   position:absolute;
-  width:18px;
-  height:18px;
+  width:14px;
+  height:14px;
   background:yellow;
   border-radius:50%;
-  box-shadow:0 0 15px yellow;
-  animation:fly 5s ease-in-out infinite;
+  box-shadow:0 0 18px yellow;
+  animation:fly 4s ease-in-out infinite;
 }
 @keyframes fly{
   50%{transform:translate(40px,-40px)}
 }
+
 #text3{
   color:#00ff66;
   font-size:30px;
   font-weight:bold;
-  text-shadow:0 0 12px #00ff66;
+  text-shadow:
+    0 0 10px white,
+    0 0 18px #00ff66;
   text-align:center;
-  margin-top:200px;
+  margin-top:220px;
 }
 
-/* ---------- SCREEN 4 ---------- */
+/* ---------- SCREEN 4 (LAST / TEMPLE) ---------- */
 #screen4{
   background:black;
 }
 #screen4 p{
-  color:white;
-  font-size:22px;
-  text-shadow:0 0 10px white;
+  color:gold;
+  font-size:24px;
   text-align:center;
+  line-height:1.6;
+  text-shadow:
+    0 0 12px gold,
+    0 0 20px orange;
   padding:20px;
 }
 
@@ -187,8 +216,8 @@ audio{display:none}
 <!-- SCREEN 4 -->
 <div class="screen" id="screen4">
   <p>
-    May your life glow with peace, love and happiness.<br>
-    May every dream you hold come true ✨
+    May your life always glow with peace and love,<br>
+    and may every wish your heart holds come true ✨
   </p>
 </div>
 
@@ -226,9 +255,7 @@ let match=document.getElementById('match');
 let cake=document.getElementById('cake');
 let dragging=false,holdTimer=null;
 
-match.addEventListener('touchstart',e=>{
-  dragging=true;
-});
+match.addEventListener('touchstart',()=>dragging=true);
 window.addEventListener('touchmove',e=>{
   if(!dragging) return;
   match.style.left=e.touches[0].clientX-40+'px';
@@ -238,9 +265,7 @@ window.addEventListener('touchmove',e=>{
   let c=cake.getBoundingClientRect();
 
   if(m.top < c.top+40 && m.left > c.left+100 && m.right < c.right-100){
-    if(!holdTimer){
-      holdTimer=setTimeout(ignite,1200);
-    }
+    if(!holdTimer) holdTimer=setTimeout(ignite,1200);
   }else{
     clearTimeout(holdTimer);
     holdTimer=null;
@@ -253,6 +278,7 @@ window.addEventListener('touchend',()=>{
 });
 
 function ignite(){
+  let s2=document.getElementById('screen2');
   for(let i=0;i<40;i++){
     let s=document.createElement('div');
     s.className='spark';
@@ -260,24 +286,24 @@ function ignite(){
     s.style.top='45%';
     s.style.setProperty('--x',(Math.random()*300-150)+'px');
     s.style.setProperty('--y',(Math.random()*300-150)+'px');
-    document.body.appendChild(s);
+    s2.appendChild(s);
     setTimeout(()=>s.remove(),1000);
   }
   music.play();
-  setTimeout(()=>show(3),2000);
+  setTimeout(()=>show(3),2200);
   setTimeout(()=>show(4),12000);
 }
 
 /* stars + fireflies */
 let s3=document.getElementById('screen3');
-for(let i=0;i<60;i++){
+for(let i=0;i<70;i++){
   let st=document.createElement('div');
   st.className='star';
   st.style.left=Math.random()*100+'vw';
   st.style.animationDelay=Math.random()*6+'s';
   s3.appendChild(st);
 }
-for(let i=0;i<12;i++){
+for(let i=0;i<18;i++){
   let f=document.createElement('div');
   f.className='firefly';
   f.style.left=Math.random()*100+'vw';
