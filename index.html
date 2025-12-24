@@ -7,9 +7,11 @@
 
 <style>
 html,body{
-  margin:0;padding:0;height:100%;
+  margin:0;
+  padding:0;
+  height:100%;
   overflow:hidden;
-  background:#000;
+  background:black;
   font-family:Arial,sans-serif;
 }
 
@@ -20,37 +22,39 @@ html,body{
   justify-content:center;
   align-items:center;
   flex-direction:column;
-  color:#fff;
+  color:white;
 }
 .screen.active{display:flex}
 
 /* ---------- SCREEN 0 ---------- */
 #screen0{
-  background:radial-gradient(circle at top,#243b6b,#000);
+  background:radial-gradient(circle at top,#1e3c72,#000);
 }
 .swipe-text{
-  font-size:26px;
+  font-size:30px;
   text-align:center;
-  animation:blink 1.5s infinite;
+  animation:pulse 1.4s infinite;
 }
-@keyframes blink{
+@keyframes pulse{
   0%,100%{opacity:.4}
   50%{opacity:1}
 }
 
 /* ---------- SCREEN 1 ---------- */
 #screen1{
-  background:radial-gradient(#0c1f3f,#000);
+  background:radial-gradient(#0b1f3a,#000);
 }
 .wait-text{
-  font-size:28px;
+  font-size:34px;
   color:gold;
-  margin-bottom:20px;
+  margin-bottom:25px;
+  text-align:center;
 }
 .envelope{
-  width:240px;height:160px;
+  width:260px;
+  height:170px;
   background:#f8f8f8;
-  border-radius:16px;
+  border-radius:18px;
   position:relative;
 }
 .envelope:before{
@@ -61,45 +65,50 @@ html,body{
   clip-path:polygon(0 0,100% 0,50% 55%);
 }
 .count{
-  font-size:56px;
-  margin-top:20px;
+  font-size:64px;
+  margin-top:25px;
 }
 
 /* ---------- SCREEN 2 ---------- */
 #screen2{
-  background:linear-gradient(135deg,#6a0572,#240046);
+  background:linear-gradient(135deg,#3a0ca3,#7209b7);
 }
-#cake{width:260px}
+#cake{
+  width:260px;
+}
 #matchstick{
   width:160px;
   margin-top:40px;
-  position:relative;
   touch-action:none;
+  position:relative;
 }
 .sparkle{
   position:absolute;
-  width:6px;height:6px;
+  width:8px;
+  height:8px;
   background:gold;
   border-radius:50%;
-  animation:spark 1.5s linear;
+  animation:spark 1.8s ease-out;
 }
 @keyframes spark{
   from{opacity:1;transform:translateY(0)}
-  to{opacity:0;transform:translateY(-80px)}
+  to{opacity:0;transform:translateY(-120px)}
 }
 
 /* ---------- SCREEN 3 ---------- */
 #screen3{overflow:hidden}
+
 .star{
   position:absolute;
-  width:7px;height:7px;
+  width:8px;
+  height:8px;
   background:white;
   clip-path:polygon(
     50% 0%,61% 38%,100% 50%,
     61% 62%,50% 100%,39% 62%,
     0% 50%,39% 38%
   );
-  animation:fall 8s linear infinite;
+  animation:fall 9s linear infinite;
 }
 @keyframes fall{
   from{transform:translateY(-200px)}
@@ -108,7 +117,8 @@ html,body{
 
 .firefly{
   position:absolute;
-  width:10px;height:10px;
+  width:10px;
+  height:10px;
   background:yellow;
   border-radius:50%;
   animation:fly 6s ease-in-out infinite;
@@ -119,24 +129,26 @@ html,body{
 
 .cloud{
   position:absolute;
-  top:90px;
-  width:260px;
+  top:80px;
+  width:280px;
+  opacity:.9;
 }
 
 .text{
   position:absolute;
-  bottom:-200px;
+  bottom:-300px;
   text-align:center;
-  font-size:30px;
+  font-size:34px;
   font-weight:bold;
   color:#00ff66;
+  z-index:10;
   text-shadow:
-    -1px -1px 0 #fff,
-     1px -1px 0 #fff,
-    -1px  1px 0 #fff,
-     1px  1px 0 #fff,
+    -2px -2px 0 white,
+     2px -2px 0 white,
+    -2px  2px 0 white,
+     2px  2px 0 white,
      0 0 25px #00ff66;
-  animation:textUp 3s forwards;
+  animation:textUp 3.5s ease forwards;
 }
 @keyframes textUp{
   to{bottom:40%}
@@ -144,20 +156,23 @@ html,body{
 
 /* ---------- SCREEN 4 ---------- */
 #screen4{
-  background:#000;
+  background:black;
 }
 #temple{
   width:100%;
+  max-height:80%;
   object-fit:contain;
   animation:zoom 8s ease-in-out infinite;
 }
 @keyframes zoom{
-  50%{transform:scale(1.05)}
+  50%{transform:scale(1.06)}
 }
 .final-text{
-  margin-top:20px;
-  font-size:30px;
+  margin-top:15px;
+  font-size:32px;
   font-weight:bold;
+  color:white;
+  text-align:center;
 }
 
 audio{display:none}
@@ -168,21 +183,25 @@ audio{display:none}
 
 <audio id="music" src="birthday.webm"></audio>
 
+<!-- SCREEN 0 -->
 <div class="screen active" id="screen0">
   <div class="swipe-text">Swipe up to begin something magical ✨⬆️</div>
 </div>
 
+<!-- SCREEN 1 -->
 <div class="screen" id="screen1">
   <div class="wait-text">Something special is waiting…</div>
   <div class="envelope"></div>
   <div class="count" id="count"></div>
 </div>
 
+<!-- SCREEN 2 -->
 <div class="screen" id="screen2">
   <img id="cake" src="cake.png">
   <img id="matchstick" src="matchstick.png">
 </div>
 
+<!-- SCREEN 3 -->
 <div class="screen" id="screen3">
   <img src="cloud.png" class="cloud">
   <div class="text">
@@ -192,9 +211,12 @@ audio{display:none}
   </div>
 </div>
 
+<!-- SCREEN 4 -->
 <div class="screen" id="screen4">
   <img id="temple" src="temple_couple.jpg">
-  <div class="final-text">May your life always shine with love & peace ✨</div>
+  <div class="final-text">
+    May your life always shine with love & peace ✨
+  </div>
 </div>
 
 <script>
@@ -231,7 +253,7 @@ function startEnvelope(){
       el.textContent='';
       show(2);
     } else el.textContent=c;
-  },800);
+  },900);
 }
 
 /* Drag matchstick */
@@ -242,40 +264,40 @@ stick.addEventListener('touchmove',e=>{
   stick.style.left=t.clientX-80+'px';
   stick.style.top=t.clientY-20+'px';
   if(t.clientY<300){
-    light();
+    lightCake();
   }
 },{once:true});
 
-function light(){
+function lightCake(){
   setTimeout(()=>{
-    for(let i=0;i<25;i++){
+    for(let i=0;i<35;i++){
       let s=document.createElement('div');
       s.className='sparkle';
       s.style.left='50%';
-      s.style.bottom='250px';
+      s.style.bottom='260px';
       document.getElementById('screen2').appendChild(s);
-      setTimeout(()=>s.remove(),1500);
+      setTimeout(()=>s.remove(),1800);
     }
     music.play();
     show(3);
-    starsAndFireflies();
-    setTimeout(()=>show(4),12000);
+    createSky();
+    setTimeout(()=>show(4),13000);
   },2000);
 }
 
-function starsAndFireflies(){
+function createSky(){
   const sky=document.getElementById('screen3');
-  for(let i=0;i<40;i++){
+  for(let i=0;i<45;i++){
     let st=document.createElement('div');
     st.className='star';
     st.style.left=Math.random()*window.innerWidth+'px';
     sky.appendChild(st);
   }
-  for(let i=0;i<12;i++){
+  for(let i=0;i<14;i++){
     let f=document.createElement('div');
     f.className='firefly';
     f.style.left=Math.random()*window.innerWidth+'px';
-    f.style.top=300+Math.random()*300+'px';
+    f.style.top=350+Math.random()*300+'px';
     sky.appendChild(f);
   }
 }
